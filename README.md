@@ -37,15 +37,19 @@ lib/content.ts         all copy, with UNCONFIRMED markers and CONTENT_HOLDS
 public/images/         local photography
 ```
 
-### Swapping in real photography
+### Adding photography
 
-Change the values in `lib/images.ts` — that is the whole job. Point each key at
-a file under `/public/images`, then delete the `picsum.photos` entry from
-`next.config.ts` once no remote placeholder remains.
+Drop a JPG into `public/images/` using one of the names in
+[`public/images/README.md`](./public/images/README.md). That is the whole job —
+no code change. Missing files fall back to gradients, so the site is
+presentable at any stage of being filled in.
 
 Every photo renders through `components/ImageField.tsx`, which paints a gradient
 fallback first and fades the photograph in over it once it decodes. If a file is
 missing or fails, the gradient stays and the page still reads as designed.
+
+No stock. A random stock landscape in the work rail reads as filler; the
+gradient reads as art direction.
 
 The unified colour grade — `saturate(.82) contrast(1.08) brightness(.94)` plus a
 warm-over-cool duotone multiply — lives on `.f .photo` in `globals.css` and is

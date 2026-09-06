@@ -1,32 +1,45 @@
 /**
- * Every photograph on the site routes through this one object. Swap a value
- * and the page re-skins — nothing else needs to change.
+ * Every photograph on the site routes through this one object.
  *
- * When the client asset drop lands, point each key at a local file under
- * `/public/images` (e.g. "/images/wedding-01.jpg") and drop the picsum
- * remotePattern from next.config.ts.
+ * These are filenames, not a to-do list. Drop a JPG into `public/images/` with
+ * the matching name and it appears on the page — no code change, no rebuild
+ * step to remember. Leave one out and the gradient fallback shows instead,
+ * which is a designed state, not a broken one. So the site is presentable at
+ * every stage of filling it in.
  *
- * Pick for spread — a wedding, a boardroom, a product shot, a portrait — not
- * the eight best football ones. The site has to stand alone against a feed
- * that is ~80% sport.
+ * Nothing here is stock. A random stock landscape in the work rail reads as
+ * filler and undercuts the pitch; a gradient reads as art direction.
+ *
+ * Where each one lands:
+ *   hero   full-viewport hero. Portrait crops fine (biased to `center 38%`).
+ *          Needs a dark lower third or the white headline stops holding.
+ *   corp   work rail 01, landscape 4:3
+ *   wed    work rail 02, portrait 3:4
+ *   prod   work rail 03, landscape 4:3
+ *   stage  work rail 04, portrait 3:4
+ *   sport  work rail 05, landscape 4:3
+ *   port   work rail 06, portrait 3:4
+ *   food   sector hover peek only — the one key with no work-rail slot
+ *
+ * Every sector row also peeks its matching key on hover.
  */
 export const IMAGES = {
-  /** Client-supplied: Malaysia v Singapore, centre circle. Portrait source. */
+  /** Client-supplied: Malaysia v Singapore, centre circle. The one real asset. */
   hero: "/images/hero-match.jpg",
-  wed: "https://picsum.photos/seed/kf-wed-07/1400/1800",
-  corp: "https://picsum.photos/seed/kf-corp-11/1600/1200",
-  prod: "https://picsum.photos/seed/kf-prod-04/1400/1400",
-  stage: "https://picsum.photos/seed/kf-stage-09/1400/1800",
+  wed: "/images/wedding.jpg",
+  corp: "/images/corporate.jpg",
+  prod: "/images/brand.jpg",
+  stage: "/images/live.jpg",
   sport: "/images/hero-match.jpg",
-  port: "https://picsum.photos/seed/kf-port-06/1400/1400",
-  food: "https://picsum.photos/seed/kf-food-03/1400/1000",
+  port: "/images/portrait.jpg",
+  food: "/images/food.jpg",
 } as const;
 
 export type ImageKey = keyof typeof IMAGES;
 
 /**
  * Gradient fallback painted under every image field. If a photo fails to load
- * — or has not been supplied yet — the gradient is what shows, and the page
+ * — or has not been dropped in yet — the gradient is what shows, and the page
  * still reads as designed rather than as a broken grid.
  */
 export type FieldTone =

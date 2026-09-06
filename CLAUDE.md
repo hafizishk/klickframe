@@ -83,9 +83,27 @@ The mock's work rail sits directly under a full-width `<section>`, so its `margi
 
 ---
 
+## Stage — this is a pitch mockup
+
+**There is no engagement yet.** The client is interested; this is the thing that
+converts that interest. Hafiz is not in day-to-day contact with them and is not
+going to go back to them with requests — no asset briefs, no sign-off forms, no
+questionnaires. Anything the mockup needs, we source ourselves or design around.
+
+Practical consequence: **do not produce homework lists for the client.** Work
+with what can be pulled off the public Instagram and YouTube, and make every
+missing piece degrade into something that still looks deliberate.
+
+The placeholder list below is an *internal* record of what is invented, so it
+does not silently become fact between mockup and launch. It is not a blocker on
+the mockup and not a request to send anyone.
+
+---
+
 ## Content status — almost everything is placeholder
 
-Confirm with the client before any of this ships:
+Written for the mock, not agreed with anyone. Fine to show; confirm before it
+ships for real:
 
 - ❌ Turnaround promises ("preview the same night, full set in a week")
 - ❌ Process steps (recce, run sheet, crew arrival)
@@ -95,7 +113,11 @@ Confirm with the client before any of this ships:
 - ❌ Client logo wall — brands appear in their feed but **relationships are unconfirmed and must not be asserted**
 - ❌ Studio address and email — not known
 
-Photography: use **their own work**, not stock. Free, no licensing question, and the client seeing their own photos look good does more selling than any layout decision. Pull 8–12 off the IG and YouTube thumbnails. Pick for spread — a wedding, a boardroom, a product shot, a portrait — not the eight best football ones.
+Photography: use **their own work**, not stock. Free, no licensing question, and the client seeing their own photos look good does more selling than any layout decision. Pull it off the public IG and YouTube thumbnails — no need to ask them for anything. Pick for spread — a wedding, a boardroom, a product shot, a portrait — not the eight best football ones.
+
+Stock is worse than nothing here. A random stock landscape in the work rail reads as filler; the gradient fallback reads as art direction. There is no picsum in the build for that reason.
+
+Images are drop-in by filename — see `public/images/README.md`. Missing files fall back to gradients, so the mockup is presentable at any stage of being filled in.
 
 All images route through one `IMAGES` config object (`lib/images.ts`). Keep that pattern.
 
@@ -110,9 +132,16 @@ Done:
 1. ✅ Scope confirmed — marketing site now, gallery portal deferred
 2. ✅ Scaffolded — Next.js 16, homepage ported from the mock, builds static, lint and typecheck clean
 
-Blocked on the client:
+3. ✅ Images made drop-in by filename, gradients where a file is absent
 
-3. Real business details — studio address and email
-4. **The asset drop.** Critical path. 8–12 of their own photos, picked for spread, not the best football ones. Until these land the work rail and sector peeks run on gradient fallbacks.
-5. The approved client list, for the marquee
-6. Sign-off on everything in `CONTENT_HOLDS`
+Next, all doable without contacting the client:
+
+4. Pull 6–8 stills off the public IG and YouTube thumbnails into `public/images/` under the names in its README. Spread over sport, not eight football frames.
+5. Decide the hero. The match photo is the strongest real asset but leads with sport; a wedding or boardroom frame suits the positioning better and needs a stronger veil gradient to hold the white headline.
+6. Deploy to Vercel so the pitch is a link, not a zip.
+
+Deferred until there is an engagement — do **not** chase these now:
+
+- Studio address and email (the contact block reads "to be confirmed")
+- An approved client list for the marquee (ships as neutral "Client" placeholders; never assert an unconfirmed relationship)
+- Sign-off on everything in `CONTENT_HOLDS`
