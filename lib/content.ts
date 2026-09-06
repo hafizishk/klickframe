@@ -23,6 +23,17 @@ export const STUDIO = {
   email: null,
 } as const;
 
+/**
+ * True while this is a pitch concept rather than KlickFrame's live site.
+ *
+ * Keep it true until they have actually commissioned the build and signed off
+ * the copy. The page carries their real WhatsApp number alongside claims they
+ * have never agreed to (see CONTENT_HOLDS), so a shared link needs to say
+ * plainly that it is a concept — otherwise a prospect can find it, read the
+ * turnaround promises as commitments, and message KlickFrame about them.
+ */
+export const IS_CONCEPT = true;
+
 export const NAV = [
   { label: "Work", href: "#work" },
   { label: "Services", href: "#services" },

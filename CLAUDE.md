@@ -134,14 +134,49 @@ Done:
 
 3. ✅ Images made drop-in by filename, gradients where a file is absent
 
+4. ✅ Shareable as a link — `npm run bundle` flattens the site into one self-contained HTML file (`dist/klickframe-pitch.html`), published as an artifact. The footer carries "Concept mock · Stackform Studios" (`IS_CONCEPT` in `lib/content.ts`); keep it until they commission the build, because the page shows their real WhatsApp number next to claims they have never agreed to.
+
 Next, all doable without contacting the client:
 
-4. Pull 6–8 stills off the public IG and YouTube thumbnails into `public/images/` under the names in its README. Spread over sport, not eight football frames.
-5. Decide the hero. The match photo is the strongest real asset but leads with sport; a wedding or boardroom frame suits the positioning better and needs a stronger veil gradient to hold the white headline.
-6. Deploy to Vercel so the pitch is a link, not a zip.
+5. Pull 6–8 stills off the public IG and YouTube thumbnails into `public/images/` under the names in its README. Spread over sport, not eight football frames.
+6. Decide the hero. The match photo is the strongest real asset but leads with sport; a wedding or boardroom frame suits the positioning better and needs a stronger veil gradient to hold the white headline.
+7. Deploy to Vercel for a permanent URL when the pitch warrants one.
 
 Deferred until there is an engagement — do **not** chase these now:
 
 - Studio address and email (the contact block reads "to be confirmed")
 - An approved client list for the marquee (ships as neutral "Client" placeholders; never assert an unconfirmed relationship)
 - Sign-off on everything in `CONTENT_HOLDS`
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
+
+---
+
+## Architecture note — the page ships no client framework
+
+Every section is a server component. All interaction lives in
+`public/interactions.js`, loaded by `components/Interactions.tsx` from an
+effect. Two reasons, both load-bearing:
+
+1. It is imperative DOM work (measuring, cursor-following, drag-scroll, image
+   decode) that gains nothing from component state, on a page whose whole pitch
+   is that it feels fast.
+2. It lets `scripts/bundle.mjs` flatten the site into one portable HTML file.
+   Inlining Next's own chunks does not work — turbopack's runtime reads
+   `document.currentScript.src`, asserts it contains `/_next/`, and fetches
+   sibling chunks by URL. The bundler therefore drops the framework entirely and
+   inlines `interactions.js` directly.
+
+**Do not turn the sections back into client components**, and do not load the
+script with `<script defer>`. Deferred scripts run at DOMContentLoaded, before
+hydration; the script's DOM mutations then cause a hydration mismatch and React
+re-renders over them, leaving the page inert. That only reproduces in a
+production build, never in `npm run dev`.

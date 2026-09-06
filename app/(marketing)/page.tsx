@@ -2,6 +2,7 @@ import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
+import { Interactions } from "@/components/Interactions";
 import { Marquee } from "@/components/Marquee";
 import { Process } from "@/components/Process";
 import { Sectors } from "@/components/Sectors";
@@ -24,6 +25,8 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      {/* Loads public/interactions.js after hydration — see the note there. */}
+      <Interactions />
     </>
   );
 }

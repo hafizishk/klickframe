@@ -22,20 +22,52 @@ npm run dev        # http://localhost:3000
 npm run build      # production build
 npm run lint       # eslint
 npm run typecheck  # tsc --noEmit
+npm run bundle     # one portable HTML file → dist/klickframe-pitch.html
 ```
+
+### Sharing it as a pitch
+
+`npm run bundle` flattens the whole site into a single self-contained HTML file
+— CSS, fonts, script and photography all inlined as data URIs, no external
+requests at all. Open it from a USB stick, attach it to an email, or publish it
+as a hosted page. It refuses to write a file that still references something it
+does not carry.
+
+For a permanent URL, deploy to Vercel: import the repo, accept the detected
+Next.js defaults, deploy. Use **Vercel nameservers from day one** when a domain
+is attached — see the registrar note in `CLAUDE.md`.
 
 ## Where things are
 
 ```
 app/
-  layout.tsx           root shell, fonts, metadata, film grain
-  globals.css          the entire design system — no CSS modules, no Tailwind
-  (marketing)/page.tsx the homepage, composed from components/
-components/            one component per section of the page
-lib/images.ts          IMAGES — every photograph on the site routes through here
-lib/content.ts         all copy, with UNCONFIRMED markers and CONTENT_HOLDS
-public/images/         local photography
+  layout.tsx             root shell, fonts, metadata, film grain
+  globals.css            the entire design system — no CSS modules, no Tailwind
+  (marketing)/page.tsx   the homepage, composed from components/
+components/              one component per section, all server-rendered
+  Interactions.tsx       loads the script below, after hydration
+public/interactions.js   every interaction on the page, in one plain script
+lib/images.ts            IMAGES — every photograph routes through here
+lib/content.ts           all copy, with UNCONFIRMED markers and CONTENT_HOLDS
+public/images/           local photography, drop-in by filename
+scripts/bundle.mjs       flattens the static export into one portable file
 ```
+
+### Why the interactions are not React
+
+Every interaction here is imperative DOM work — measuring the marquee set,
+following the cursor, drag-scrolling the rail, decoding a photo. None of it
+benefits from component state, and holding it there would mean shipping a
+framework to do what one small script does, on a page whose entire pitch is
+that it feels fast. So the sections are server components and
+`public/interactions.js` is the only script.
+
+It is loaded from an effect rather than as `<script defer>`, and that matters:
+a deferred script runs at DOMContentLoaded, *before* hydration. It would mutate
+the DOM (adding `.loaded`, cloning marquee sets), React would find markup that
+no longer matches the server HTML, bail out, and re-render — silently throwing
+away those mutations and every listener. That failure does not reproduce in
+`npm run dev`, only in a production build.
 
 ### Adding photography
 

@@ -1,14 +1,8 @@
-"use client";
-
-import { useRef } from "react";
 import { WORK, WORK_NOTE } from "@/lib/content";
 import { IMAGES } from "@/lib/images";
 import { ImageField } from "./ImageField";
 
 export function WorkRail() {
-  const rail = useRef<HTMLDivElement>(null);
-  const drag = useRef({ down: false, startX: 0, startLeft: 0 });
-
   return (
     <section id="work">
       <div className="wrap">
@@ -18,30 +12,10 @@ export function WorkRail() {
         </div>
       </div>
 
+      {/* The rail must stay inside a .wrap — its negative margin is measured
+          against one. See the deviation note in CLAUDE.md. */}
       <div className="wrap">
-        <div
-          className="rail"
-          ref={rail}
-          onPointerDown={(e) => {
-            if (!rail.current) return;
-            drag.current = {
-              down: true,
-              startX: e.clientX,
-              startLeft: rail.current.scrollLeft,
-            };
-            rail.current.setPointerCapture(e.pointerId);
-          }}
-          onPointerMove={(e) => {
-            if (!drag.current.down || !rail.current) return;
-            rail.current.scrollLeft = drag.current.startLeft - (e.clientX - drag.current.startX);
-          }}
-          onPointerUp={() => {
-            drag.current.down = false;
-          }}
-          onPointerCancel={() => {
-            drag.current.down = false;
-          }}
-        >
+        <div className="rail">
           {WORK.map((project) => (
             <article className="case" key={project.index}>
               <ImageField tone={project.tone} src={IMAGES[project.image]}>
