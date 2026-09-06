@@ -35,6 +35,88 @@
     probe.src = src;
   });
 
+  // ---- reels: load and play only while on screen ----
+  // preload="none" in the markup means nothing is fetched until this decides
+  // it is worth fetching. Six autoplaying videos would otherwise all download
+  // at once, on a page whose whole pitch is that it feels fast.
+  function addSource(video, src, type) {
+    if (!src) return;
+    var source = document.createElement("source");
+    source.src = src;
+    source.type = type;
+    video.appendChild(source);
+  }
+
+  var reels = document.querySelectorAll(".f .motion[data-src]");
+  if (reels.length) {
+    reels.forEach(function (el) {
+      var video = /** @type {HTMLVideoElement} */ (el);
+      var field = video.parentElement;
+      if (!field) return;
+
+      // Under prefers-reduced-motion the reel never loads or plays; the poster
+      // frame stands in as a still, so the slot still reads as finished.
+      if (calm.matches) {
+        if (video.poster) {
+          var still = new Image();
+          still.onload = function () {
+            field.classList.add("loaded");
+          };
+          still.src = video.poster;
+        }
+        return;
+      }
+
+      // Autoplay is only permitted muted. Set it on the element as well as in
+      // the markup: a browser restoring state across a reload can otherwise
+      // hand back an unmuted element and silently refuse to play it.
+      video.muted = true;
+
+      var started = false;
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              if (!started) {
+                started = true;
+                // WebM first — Chrome and Firefox take it at roughly two
+                // thirds the bytes. Safari ignores it and falls through to the
+                // MP4, which is the only one it will play.
+                addSource(video, video.dataset.srcWebm, "video/webm");
+                addSource(video, video.dataset.src, "video/mp4");
+                video.load();
+              }
+              var play = video.play();
+              // A rejected play() is normal — a background tab, a battery
+              // saver, a browser that declines. The poster stays; nothing to
+              // handle, but it must not surface as an unhandled rejection.
+              if (play && play.catch) play.catch(function () {});
+            } else {
+              video.pause();
+            }
+          });
+        },
+        { rootMargin: "200px" },
+      );
+
+      video.addEventListener("loadeddata", function () {
+        field.classList.add("loaded");
+      });
+      // If every source is missing or refused, fall back to the poster rather
+      // than fading in a black rectangle. The error fires on the <video> only
+      // once all its <source> children have failed.
+      video.addEventListener("error", function () {
+        if (video.poster) {
+          field.classList.add("loaded");
+        } else {
+          field.classList.remove("loaded");
+        }
+      });
+
+      observer.observe(field);
+    });
+  }
+
   // ---- sector rows: float the image at the cursor ----
   var peek = document.querySelector(".peek");
   var peekField = peek && peek.querySelector(".f");

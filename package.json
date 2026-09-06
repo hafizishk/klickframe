@@ -9,12 +9,14 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "export": "STATIC_EXPORT=1 next build",
-    "bundle": "npm run export && node scripts/bundle.mjs"
+    "bundle": "npm run export && node scripts/bundle.mjs",
+    "media": "node scripts/media.mjs"
   },
   "dependencies": {
     "next": "^16.3.4",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.3.1",

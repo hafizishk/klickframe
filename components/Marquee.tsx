@@ -5,8 +5,8 @@ import { CLIENTS } from "@/lib/content";
  * the viewport and animates by exactly one set width, so the loop is seamless
  * and the speed is constant however many names go in.
  *
- * The names are neutral placeholders. Brands appear in the KlickFrame feed, but
- * those relationships are unconfirmed and must not be asserted.
+ * The names are real engaged clients, confirmed by Hafiz — see CLIENTS in
+ * lib/content.ts for the ordering rationale.
  */
 export function Marquee() {
   return (

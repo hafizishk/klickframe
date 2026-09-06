@@ -50,6 +50,8 @@ export const HERO = {
   slate: "Singapore · Est. KlickFrame SG",
   image: "hero" as ImageKey,
   tone: "f-night" as FieldTone,
+  /** Play VIDEOS.hero here when the file exists, else the photograph. */
+  motion: true,
 } as const;
 
 export const STATEMENT = {
@@ -66,7 +68,14 @@ export const STATEMENT = {
   ],
 } as const;
 
-/** UNCONFIRMED — every caption below is invented for the mock. */
+/**
+ * UNCONFIRMED — every caption below is invented for the mock.
+ *
+ * `motion: true` plays the matching reel from VIDEOS in that slot, falling back
+ * to the photograph and then the gradient. It is set on the portrait cards
+ * (02, 04, 06) because reels are shot 9:16 and those slots are 3:4 — the
+ * landscape cards would crop a vertical reel to a letterbox of its middle.
+ */
 export const WORK = [
   {
     index: "01",
@@ -75,6 +84,7 @@ export const WORK = [
     meta: ["Four cameras", "Two days"],
     image: "corp" as ImageKey,
     tone: "f-corp" as FieldTone,
+    motion: false,
   },
   {
     index: "02",
@@ -83,6 +93,7 @@ export const WORK = [
     meta: ["Photo, film", "Live feed"],
     image: "wed" as ImageKey,
     tone: "f-wed" as FieldTone,
+    motion: true,
   },
   {
     index: "03",
@@ -91,6 +102,7 @@ export const WORK = [
     meta: ["Studio", "Product"],
     image: "prod" as ImageKey,
     tone: "f-prod" as FieldTone,
+    motion: false,
   },
   {
     index: "04",
@@ -99,6 +111,7 @@ export const WORK = [
     meta: ["Multi-cam", "Same-day cuts"],
     image: "stage" as ImageKey,
     tone: "f-stage" as FieldTone,
+    motion: true,
   },
   {
     index: "05",
@@ -107,6 +120,7 @@ export const WORK = [
     meta: ["Live graphics", "Full season"],
     image: "sport" as ImageKey,
     tone: "f-sport" as FieldTone,
+    motion: false,
   },
   {
     index: "06",
@@ -115,6 +129,7 @@ export const WORK = [
     meta: ["Studio", "On location"],
     image: "port" as ImageKey,
     tone: "f-port" as FieldTone,
+    motion: true,
   },
 ] as const;
 
@@ -206,22 +221,28 @@ export const SECTORS = [
 ] as const;
 
 /**
- * UNCONFIRMED — client relationships have NOT been confirmed and must not be
- * asserted. Brands appear in the KlickFrame feed; that is not a client list.
- * These are neutral placeholders until an approved list arrives.
+ * CONFIRMED by Hafiz as engaged clients. Everything else on the page is still
+ * placeholder — this list is not.
  *
- * When real logos go in they need explicit width/height, or the marquee
- * measures against zero-width images and the loop breaks.
+ * Ordered so the non-sport names read first. The marquee loops, but the opening
+ * few are what a wedding or corporate prospect actually registers, and the
+ * positioning is capability-first: sport is proof of the capability, never the
+ * category. HSBC and Shopee do more for that argument than any copy on the page.
+ *
+ * These are set as text. If real logos replace them they need explicit
+ * width/height, or the marquee measures the set before the images have laid out
+ * and gets zero.
  */
 export const CLIENTS = [
-  "Client",
-  "Client",
-  "Client",
-  "Client",
-  "Client",
-  "Client",
-  "Client",
-  "Client",
+  "Puma",
+  "HSBC",
+  "Shopee",
+  "On",
+  "FAS",
+  "AFC",
+  "Balestier Khalsa",
+  "Weston",
+  "SYL",
 ] as const;
 
 /** UNCONFIRMED — every step below is invented for the mock. */
@@ -274,7 +295,6 @@ export const CONTENT_HOLDS = [
   "Kit ownership and no-markup claim",
   "In-house edit claim (the person who shot it edits it)",
   "Every project caption in the work rail, and the project count",
-  "Client list — relationships are unconfirmed and must not be asserted",
   "Studio address and email",
   "Non-sport photography for the work rail and sector peeks",
 ] as const;

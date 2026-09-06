@@ -11,7 +11,7 @@
  *
  *   npm run bundle   →  dist/klickframe-pitch.html
  */
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync } from "node:fs";
 import { join, extname, posix } from "node:path";
 
 const OUT = "out";
@@ -32,9 +32,19 @@ const MIME = {
   ".svg": "image/svg+xml",
   ".webp": "image/webp",
   ".avif": "image/avif",
+  ".mp4": "video/mp4",
+  ".webm": "video/webm",
 };
 
-const stats = { css: 0, js: 0, fonts: 0, images: 0, frameworkDropped: 0 };
+/**
+ * How much base64 video the portable file will carry. Reels are the heaviest
+ * thing on the page by an order of magnitude; past this the file stops being
+ * something you can email, so the reels are dropped to their poster frames
+ * instead and the page still reads as designed.
+ */
+const VIDEO_BUDGET_MB = 10;
+
+const stats = { css: 0, js: 0, fonts: 0, images: 0, videos: 0, frameworkDropped: 0 };
 const missing = new Set();
 
 /** Read a site-absolute path ("/_next/...") out of the export directory. */
@@ -62,7 +72,7 @@ function dataUri(sitePath) {
  */
 const uriCache = new Map();
 function inlinePublicAssets(text) {
-  return text.replace(/\/(?:images|icon)\/?[\w./-]*\.(?:jpe?g|png|svg|webp|avif)/g, (match) => {
+  return text.replace(/\/(?:images|videos|icon)\/?[\w./-]*\.(?:jpe?g|png|svg|webp|avif)/g, (match) => {
     if (!uriCache.has(match)) {
       const uri = dataUri(match);
       uriCache.set(match, uri);
@@ -100,6 +110,54 @@ html = html.replace(/<link\b[^>]*rel="(?:preload|prefetch|modulepreload)"[^>]*\/
 // 3. Inline the public assets referenced by the markup itself, BEFORE any JS
 //    is embedded, so this never rewrites something inside a script body.
 html = inlinePublicAssets(html);
+
+// 3b. Reels. Inline them only while they fit the budget; otherwise replace each
+//     <video> with its poster as a still, so the slot keeps a real frame rather
+//     than falling all the way back to the gradient.
+//
+//     BOTH formats are carried. It is tempting to keep only the MP4 on the
+//     grounds that everything plays H.264, but that is not true of every
+//     Chromium build — Linux packages routinely ship without the proprietary
+//     decoder, and a portable file has no server to negotiate with. Safari
+//     needs the MP4, those builds need the WebM, so the file carries each.
+const reelTags = [...html.matchAll(/<video\b[^>]*\bdata-src="([^"]+)"[^>]*>(?:<\/video>)?/g)];
+const sizeOf = (sitePath) => {
+  const file = join(OUT, sitePath.replace(/^\//, ""));
+  return existsSync(file) ? statSync(file).size : 0;
+};
+const reelBytes = reelTags.reduce(
+  (total, [, src]) => total + sizeOf(src) + sizeOf(src.replace(/\.mp4$/, ".webm")),
+  0,
+);
+// base64 is 4 bytes per 3.
+const projectedMB = (reelBytes * 1.34) / 1024 / 1024;
+const inlineReels = projectedMB <= VIDEO_BUDGET_MB;
+
+html = html.replace(/<video\b([^>]*)><\/video>|<video\b([^>]*)\/>/g, (tag, a, b) => {
+  const attrs = a ?? b ?? "";
+  const src = attrs.match(/\bdata-src="([^"]+)"/)?.[1];
+  const poster = attrs.match(/\bposter="([^"]+)"/)?.[1];
+  const classes = attrs.match(/\bclass="([^"]+)"/)?.[1] ?? "motion";
+
+  if (inlineReels && src) {
+    const mp4 = dataUri(src);
+    const webm = dataUri(src.replace(/\.mp4$/, ".webm"));
+    if (mp4 || webm) {
+      stats.videos++;
+      let kept = attrs
+        .replace(/\sdata-src-webm="[^"]*"/, "")
+        .replace(/\sdata-src="[^"]*"/, "");
+      if (mp4) kept += ` data-src="${mp4}"`;
+      if (webm) kept += ` data-src-webm="${webm}"`;
+      return `<video${kept}></video>`;
+    }
+  }
+
+  // No video: stand the poster in as a still, on the same code path photos use.
+  return poster
+    ? `<div class="${classes.replace("motion", "photo")}" data-src="${poster}"></div>`
+    : "";
+});
 
 // 4. Scripts.
 //
@@ -204,14 +262,16 @@ const markup = out.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
 // Photography that has not been supplied yet is an expected state, not a
 // failure — those fields render their gradient fallback, and their data-src
 // stays pointing at the filename that will one day exist.
-const awaitingPhotos = [...missing].filter((p) => p.startsWith("/images/"));
+const awaitingPhotos = [...missing].filter(
+  (p) => p.startsWith("/images/") || p.startsWith("/videos/"),
+);
 
 // \s before the attribute name, or `data-src="…"` matches as `src="…"`.
 const dangling = [
   ...new Set([...markup.matchAll(/\s(?:src|href|data-src)="(\/[^"]*)"/g)].map((m) => m[1])),
 ].filter((ref) => !awaitingPhotos.includes(ref));
 const trulyMissing = [...missing].filter(
-  (p) => !p.startsWith("/images/") && !p.includes("%23"), // %23 = a CSS filter ref, not a file
+  (p) => !p.startsWith("/images/") && !p.startsWith("/videos/") && !p.includes("%23"),
 );
 
 console.log(
@@ -220,6 +280,9 @@ console.log(
       target: TARGET,
       sizeMB: +(Buffer.byteLength(out) / 1024 / 1024).toFixed(2),
       inlined: stats,
+      reels: inlineReels
+        ? `inlined (${projectedMB.toFixed(1)} MB of ${VIDEO_BUDGET_MB} MB budget)`
+        : `dropped to posters — ${projectedMB.toFixed(1)} MB would exceed the ${VIDEO_BUDGET_MB} MB budget`,
       awaitingPhotos,
       danglingRefs: dangling,
       trulyMissing,

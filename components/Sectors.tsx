@@ -1,3 +1,4 @@
+import { firstAvailable } from "@/lib/assets";
 import { SECTORS } from "@/lib/content";
 import { IMAGES } from "@/lib/images";
 
@@ -22,7 +23,7 @@ export function Sectors() {
                 className="srow"
                 href="#contact"
                 key={sector.title}
-                data-peek-src={IMAGES[sector.image]}
+                data-peek-src={firstAvailable(IMAGES[sector.image])}
                 data-peek-tone={sector.tone}
               >
                 <h3>{sector.title}</h3>

@@ -110,7 +110,7 @@ ships for real:
 - ❌ "We own the kit, nothing rented in, nothing marked up"
 - ❌ "We cut in house — the person who shot it edits it"
 - ❌ Every project caption in the work rail
-- ❌ Client logo wall — brands appear in their feed but **relationships are unconfirmed and must not be asserted**
+- ✅ Client list — CONFIRMED by Hafiz: Puma, HSBC, Shopee, On, FAS, AFC, Balestier Khalsa, Weston, SYL. Ordered non-sport first, because the positioning is capability-first.
 - ❌ Studio address and email — not known
 
 Photography: use **their own work**, not stock. Free, no licensing question, and the client seeing their own photos look good does more selling than any layout decision. Pull it off the public IG and YouTube thumbnails — no need to ask them for anything. Pick for spread — a wedding, a boardroom, a product shot, a portrait — not the eight best football ones.
@@ -145,7 +145,6 @@ Next, all doable without contacting the client:
 Deferred until there is an engagement — do **not** chase these now:
 
 - Studio address and email (the contact block reads "to be confirmed")
-- An approved client list for the marquee (ships as neutral "Client" placeholders; never assert an unconfirmed relationship)
 - Sign-off on everything in `CONTENT_HOLDS`
 
 <!-- BEGIN:nextjs-agent-rules -->

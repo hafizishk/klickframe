@@ -38,6 +38,46 @@ export const IMAGES = {
 export type ImageKey = keyof typeof IMAGES;
 
 /**
+ * Reels, as silent looping video. Same keys as IMAGES: a key with a file here
+ * renders motion in that slot, and one without falls back to the photograph,
+ * which falls back to the gradient. Three tiers, so any mix of what exists
+ * still looks finished.
+ *
+ * These are the strongest thing in their feed, and a live multi-camera cut is
+ * a claim far better shown than described.
+ *
+ * Do NOT drop a raw Instagram download in here. Run `npm run media` — it
+ * strips the audio (nothing autoplays with sound, and it sidesteps any
+ * question about the music on the original post), caps the height, moves the
+ * moov atom to the front so playback starts before the file finishes loading,
+ * and writes the poster frame each entry below points at.
+ */
+export const VIDEOS = {
+  hero: "/videos/hero.mp4",
+  wed: "/videos/wedding.mp4",
+  corp: "/videos/corporate.mp4",
+  prod: "/videos/brand.mp4",
+  stage: "/videos/live.mp4",
+  sport: "/videos/sport.mp4",
+  port: "/videos/portrait.mp4",
+  food: "/videos/food.mp4",
+} as const;
+
+/** Poster frame written next to each video by `npm run media`. */
+export function posterFor(video: string) {
+  return video.replace(/\.mp4$/, "-poster.jpg");
+}
+
+/**
+ * VP9/WebM sibling, offered ahead of the MP4. Chrome and Firefox take it at
+ * roughly two thirds the bytes; Safari ignores it and takes the MP4, which is
+ * the only one it will play.
+ */
+export function webmFor(video: string) {
+  return video.replace(/\.mp4$/, ".webm");
+}
+
+/**
  * Gradient fallback painted under every image field. If a photo fails to load
  * — or has not been dropped in yet — the gradient is what shows, and the page
  * still reads as designed rather than as a broken grid.
