@@ -229,9 +229,8 @@ export const SECTORS = [
  * positioning is capability-first: sport is proof of the capability, never the
  * category. HSBC and Shopee do more for that argument than any copy on the page.
  *
- * These are set as text. If real logos replace them they need explicit
- * width/height, or the marquee measures the set before the images have laid out
- * and gets zero.
+ * Each renders as its logo when `public/logos/<slug>.svg` exists, and as its
+ * name in type when it does not — see public/logos/README.md.
  */
 export const CLIENTS = [
   "Puma",
@@ -244,6 +243,15 @@ export const CLIENTS = [
   "Weston",
   "SYL",
 ] as const;
+
+/** `Balestier Khalsa` → `balestier-khalsa`, the filename in public/logos/. */
+export function logoSlug(client: string) {
+  return client
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
 
 /** UNCONFIRMED — every step below is invented for the mock. */
 export const PROCESS = {

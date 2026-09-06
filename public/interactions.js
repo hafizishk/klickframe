@@ -177,6 +177,14 @@
   buildMarquee();
   // Fonts land after this script runs and change the measured width.
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildMarquee);
+  // Client logos carry width/height so the first measurement is already
+  // correct, but an SVG whose viewBox implies a different ratio settles at its
+  // real width only once decoded. Re-measure then; it is idempotent.
+  if (track) {
+    track.querySelectorAll("img").forEach(function (img) {
+      if (!img.complete) img.addEventListener("load", buildMarquee, { once: true });
+    });
+  }
 
   var resizeTimer;
   window.addEventListener("resize", function () {

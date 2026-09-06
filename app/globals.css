@@ -650,12 +650,28 @@ nav a:focus-visible::after {
   padding-right: 64px;
   flex: none;
 }
+.marq-set {
+  align-items: center;
+}
 .marq span {
   font-size: clamp(19px, 2.2vw, 32px);
   font-weight: 600;
   color: rgba(244, 242, 237, 0.4);
   white-space: nowrap;
   font-variation-settings: "wdth" 100;
+}
+/* Nine brand palettes would tear a near-monochrome page apart. `brightness(0)`
+   crushes any logo — colour, black or white — to a flat silhouette, `invert(1)`
+   lifts it to white, and the opacity lands it on exactly the value the text
+   names use, so logos and type read as one row rather than as a pasted-in
+   sponsor board. Height is normalised optically; width follows the aspect ratio
+   carried by the width/height attributes. */
+.marq .logo {
+  height: clamp(17px, 1.9vw, 27px);
+  width: auto;
+  display: block;
+  filter: brightness(0) invert(1);
+  opacity: 0.4;
 }
 @keyframes slide {
   to {
