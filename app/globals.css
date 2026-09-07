@@ -643,7 +643,7 @@ nav a:focus-visible::after {
   color: var(--black);
   border-block: 1px solid var(--hair-d);
   overflow: hidden;
-  padding-block: 30px;
+  padding-block: clamp(34px, 3.6vw, 52px);
 }
 .marq-in {
   display: flex;
@@ -653,12 +653,10 @@ nav a:focus-visible::after {
 }
 .marq-set {
   display: flex;
-  gap: 64px;
-  padding-right: 64px;
-  flex: none;
-}
-.marq-set {
   align-items: center;
+  gap: clamp(52px, 5.6vw, 92px);
+  padding-right: clamp(52px, 5.6vw, 92px);
+  flex: none;
 }
 /* Fallback for a client with no logo file yet: the name in type, weighted to
    sit alongside the logos rather than shout over them. */
@@ -677,7 +675,7 @@ nav a:focus-visible::after {
    brand palettes from overpowering a near-monochrome page, without draining
    the colour that is the point of showing them. */
 .marq .logo {
-  height: calc(clamp(18px, 2.1vw, 30px) * var(--logo-scale, 1));
+  height: calc(clamp(28px, 3.3vw, 48px) * var(--logo-scale, 1));
   width: auto;
   display: block;
   filter: saturate(0.9);
