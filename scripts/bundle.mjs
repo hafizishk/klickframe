@@ -72,7 +72,7 @@ function dataUri(sitePath) {
  */
 const uriCache = new Map();
 function inlinePublicAssets(text) {
-  return text.replace(/\/(?:images|videos|icon)\/?[\w./-]*\.(?:jpe?g|png|svg|webp|avif)/g, (match) => {
+  return text.replace(/\/(?:images|videos|logos|icon)\/?[\w./-]*\.(?:jpe?g|png|svg|webp|avif)/g, (match) => {
     if (!uriCache.has(match)) {
       const uri = dataUri(match);
       uriCache.set(match, uri);

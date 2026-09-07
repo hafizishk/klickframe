@@ -238,7 +238,10 @@ export const CLIENTS = [
   "Shopee",
   "On",
   "FAS",
-  "AFC",
+  // NOTE: the supplied logo is the ASEAN Football Federation (AFF), not the
+  // Asian Football Confederation (AFC). Different bodies — Hafiz listed AFC and
+  // uploaded AFF. Named for the file that exists; correct whichever is wrong.
+  "AFF",
   "Balestier Khalsa",
   "Weston",
   "SYL",

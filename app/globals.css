@@ -660,18 +660,31 @@ nav a:focus-visible::after {
   white-space: nowrap;
   font-variation-settings: "wdth" 100;
 }
-/* Nine brand palettes would tear a near-monochrome page apart. `brightness(0)`
-   crushes any logo — colour, black or white — to a flat silhouette, `invert(1)`
-   lifts it to white, and the opacity lands it on exactly the value the text
-   names use, so logos and type read as one row rather than as a pasted-in
-   sponsor board. Height is normalised optically; width follows the aspect ratio
-   carried by the width/height attributes. */
+/* Nine brand palettes would tear a near-monochrome page apart, so no logo is
+   shown in its own colours. Height is normalised optically per logo via
+   --logo-scale from the manifest; width follows the aspect ratio carried by the
+   width/height attributes. */
 .marq .logo {
-  height: clamp(17px, 1.9vw, 27px);
+  height: calc(clamp(18px, 2.1vw, 30px) * var(--logo-scale, 1));
   width: auto;
   display: block;
+}
+/* A flat single-colour mark: crush it to a silhouette and lift it to white, at
+   exactly the value the text names use, so logos and type read as one row
+   rather than as a pasted-in sponsor board. */
+.marq .logo--silhouette {
   filter: brightness(0) invert(1);
   opacity: 0.4;
+}
+/* A mark carrying internal tone — a club crest, a wordmark knocked out of a
+   coloured field — would silhouette into a featureless blob, because the detail
+   that identifies it IS the colour. Desaturate instead: the form survives, and
+   the page stays monochrome. Slightly brighter and more opaque than the
+   silhouettes, since a mid-grey sits lower against #070707 than flat white
+   does at 0.4. */
+.marq .logo--tone {
+  filter: grayscale(1) brightness(1.3) contrast(1.05);
+  opacity: 0.58;
 }
 @keyframes slide {
   to {
