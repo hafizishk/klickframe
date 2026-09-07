@@ -39,6 +39,7 @@ export function WorkRail() {
                   webm={video && publicFileExists(webmFor(video)) ? webmFor(video) : undefined}
                   poster={video ? firstAvailable(posterFor(video), photo) : undefined}
                   photo={video ? undefined : firstAvailable(photo)}
+                  focus={"focus" in project ? project.focus : undefined}
                 >
                   <span className="idx">
                     {project.index} / {project.kicker}

@@ -139,13 +139,16 @@ h3 {
   background: linear-gradient(155deg, rgba(28, 22, 16, 0.34), rgba(10, 16, 24, 0.3));
   mix-blend-mode: multiply;
 }
+/* --focus-x nudges the framing sideways, with --focus-zoom supplying the
+   overhang that makes the nudge possible; both default to no-ops. See the
+   note on MediaField's `focus` prop for why object-position cannot do this. */
 .case .f .photo,
 .case .f .motion {
-  transform: scale(1.001);
+  transform: translateX(var(--focus-x, 0)) scale(var(--focus-zoom, 1.001));
 }
 .case:hover .f .photo,
 .case:hover .f .motion {
-  transform: scale(1.045);
+  transform: translateX(var(--focus-x, 0)) scale(calc(var(--focus-zoom, 1.001) * 1.044));
 }
 /* portrait source in a landscape hero — bias the crop toward the crowd */
 .hero-bg .photo {

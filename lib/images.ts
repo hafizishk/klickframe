@@ -33,6 +33,8 @@ export const IMAGES = {
   sport: "/images/hero-match.jpg",
   port: "/images/portrait.jpg",
   food: "/images/food.jpg",
+  /** HSBC netball. No stills supplied, so this falls straight to the reel. */
+  hsbc: "/images/hsbc.jpg",
 } as const;
 
 export type ImageKey = keyof typeof IMAGES;
@@ -61,6 +63,7 @@ export const VIDEOS = {
   sport: "/videos/sport.mp4",
   port: "/videos/portrait.mp4",
   food: "/videos/food.mp4",
+  hsbc: "/videos/hsbc.mp4",
 } as const;
 
 /** Poster frame written next to each video by `npm run media`. */

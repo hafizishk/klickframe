@@ -37,7 +37,7 @@ const SRC = existsSync("assets/reels") ? "assets/reels" : "media-src";
 const DEST = join("public", "videos");
 
 /** Slot names the site knows about — see VIDEOS in lib/images.ts. */
-const SLOTS = ["hero", "wedding", "corporate", "brand", "live", "sport", "portrait", "food"];
+const SLOTS = ["hero", "wedding", "corporate", "brand", "live", "sport", "portrait", "food", "hsbc"];
 
 const MAX_HEIGHT = 900; // reels are 1920 tall; the biggest slot here is a card
 const MAX_SECONDS = 8;

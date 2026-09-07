@@ -69,7 +69,7 @@ export const STATEMENT = {
 } as const;
 
 /**
- * The work rail. Five of these are real, named projects from KlickFrame's own
+ * The work rail. Six of these are real, named projects from KlickFrame's own
  * feed, each carrying the reel that was shot for it; two are UNCONFIRMED
  * placeholders standing in for sectors the site is trying to win.
  *
@@ -94,7 +94,8 @@ export const WORK = [
     index: "01",
     kicker: "Brand",
     // Real: product film for Puma Ultimate 9, with Weston Corp and Flair.
-    title: "Puma Ultimate 9, with Weston Corp",
+    // Title is Hafiz's wording — keep the "x" as written.
+    title: "Puma Ultimate 9 x Weston Corp",
     meta: ["Product film", "On location"],
     image: "prod" as ImageKey,
     tone: "f-prod" as FieldTone,
@@ -123,6 +124,8 @@ export const WORK = [
     tone: "f-stage" as FieldTone,
     portrait: true,
     motion: true,
+    // The banner sits left of centre in frame; nudge the framing right.
+    focus: 0.03,
   },
   {
     index: "04",
@@ -156,6 +159,19 @@ export const WORK = [
     tone: "f-port" as FieldTone,
     portrait: false,
     motion: false,
+  },
+  {
+    index: "07",
+    // "Live" rather than "Sport": this is match coverage, and live multi-camera
+    // is the differentiator the whole site is built to sell.
+    kicker: "Live",
+    // Real: HSBC netball.
+    title: "HSBC Netball",
+    meta: ["Match coverage", "Highlights"],
+    image: "hsbc" as ImageKey,
+    tone: "f-sport" as FieldTone,
+    portrait: true,
+    motion: true,
   },
 ] as const;
 

@@ -12,6 +12,14 @@ type Props = {
    *  prefers-reduced-motion. */
   poster?: string;
   photo?: string;
+  /**
+   * Nudge the framing horizontally, as a fraction of the card width — positive
+   * moves the picture right. Needed because `cover` leaves no horizontal slack
+   * when a 9:16 reel fills a 3:4 card: it fits the width exactly and crops top
+   * and bottom, so `object-position` on the X axis does nothing at all. The
+   * shift is therefore paired with just enough zoom to keep both edges covered.
+   */
+  focus?: number;
   className?: string;
   children?: ReactNode;
 };
@@ -30,11 +38,18 @@ type Props = {
  * reel goes through the same two, which is what makes footage from different
  * shoots read as one studio.
  */
-export function MediaField({ tone, video, webm, poster, photo, className, children }: Props) {
+export function MediaField({ tone, video, webm, poster, photo, focus, className, children }: Props) {
   const hasMedia = Boolean(video || photo);
+  // Shifting by f needs an overhang of f on each side, hence 1 + 2f.
+  const framing = focus
+    ? ({
+        "--focus-x": `${focus * 100}%`,
+        "--focus-zoom": 1 + 2 * Math.abs(focus),
+      } as React.CSSProperties)
+    : undefined;
 
   return (
-    <div className={["f", tone, className].filter(Boolean).join(" ")}>
+    <div className={["f", tone, className].filter(Boolean).join(" ")} style={framing}>
       {video ? (
         <video
           className="motion"
