@@ -323,5 +323,5 @@ export const CONTENT_HOLDS = [
   "In-house edit claim (the person who shot it edits it)",
   "The project count — \"thirty-plus\". Every card shown is real work.",
   "Studio address and email",
-  "Non-sport photography for the work rail and sector peeks",
+  "Non-sport photography — the work rail runs on reels, and there is none for the sector list",
 ] as const;

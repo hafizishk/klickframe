@@ -1,42 +1,34 @@
-import { firstAvailable } from "@/lib/assets";
 import { SECTORS } from "@/lib/content";
-import { IMAGES } from "@/lib/images";
 
 /**
- * Sector list where hovering a row floats its image at the cursor. The peek is
- * driven by `Interactions`, which reads the data attributes below; it stays
- * inert under prefers-reduced-motion, and is display:none under 820px where
- * there is no cursor to follow.
+ * The sector list.
  *
- * Order is deliberate and settled — Weddings first, Sport fifth.
+ * The mock had each row float its image at the cursor on hover. That is gone:
+ * there is no sector photography, so it floated an empty gradient over the
+ * type — a grey box obscuring the words it was meant to illustrate. The one
+ * row that did have an image was Sport, which made it worse: the only working
+ * hover on a page whose whole argument is that this studio is not a sports
+ * specialist.
+ *
+ * If sector stills ever land, the reel poster frames in public/videos/ are the
+ * obvious source and this is worth rebuilding. Until then a clean list beats a
+ * broken flourish.
  */
 export function Sectors() {
   return (
-    <>
-      <section id="sectors" className="sectors">
-        <div className="wrap">
-          <p className="slate slate-lead">Sectors</p>
-          <h2>Who we work with.</h2>
-          <div className="slist">
-            {SECTORS.map((sector) => (
-              <a
-                className="srow"
-                href="#contact"
-                key={sector.title}
-                data-peek-src={firstAvailable(IMAGES[sector.image])}
-                data-peek-tone={sector.tone}
-              >
-                <h3>{sector.title}</h3>
-                <p>{sector.body}</p>
-              </a>
-            ))}
-          </div>
+    <section id="sectors" className="sectors">
+      <div className="wrap">
+        <p className="slate slate-lead">Sectors</p>
+        <h2>Who we work with.</h2>
+        <div className="slist">
+          {SECTORS.map((sector) => (
+            <a className="srow" href="#contact" key={sector.title}>
+              <h3>{sector.title}</h3>
+              <p>{sector.body}</p>
+            </a>
+          ))}
         </div>
-      </section>
-
-      <div className="peek" aria-hidden="true">
-        <div className="f" />
       </div>
-    </>
+    </section>
   );
 }

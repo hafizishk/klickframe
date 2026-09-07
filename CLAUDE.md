@@ -68,7 +68,7 @@ Match the D2D platform so it is one maintenance surface:
 - Full-viewport hero, slow drift, headline rises line-by-line once on load
 - Nav in `mix-blend-mode: difference`
 - Horizontal drag-scroll work rail, alternating portrait/landscape crops
-- Sector list where hover floats the image at the cursor
+- Sector list — plain, no hover image. The mock floated the sector image at the cursor; removed, because there is no sector photography and it floated an empty gradient over the type. Do not restore it without stills to put in it.
 - Sticky services column against a scrolling list
 - Archivo variable, width axis ~118 on headlines
 - No cards, no rounded corners, no borders. Form fields are underlines.

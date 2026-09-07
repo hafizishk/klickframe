@@ -19,9 +19,7 @@
  *   stage  work rail 04, portrait 3:4
  *   sport  work rail 05, landscape 4:3
  *   port   work rail 06, portrait 3:4
- *   food   sector hover peek only — the one key with no work-rail slot
- *
- * Every sector row also peeks its matching key on hover.
+ *   food   unused — no work-rail slot and no sector photography
  */
 export const IMAGES = {
   /** Client-supplied: Malaysia v Singapore, centre circle. The one real asset. */

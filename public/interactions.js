@@ -133,36 +133,6 @@
     });
   }
 
-  // ---- sector rows: float the image at the cursor ----
-  var peek = document.querySelector(".peek");
-  var peekField = peek && peek.querySelector(".f");
-  if (peek && peekField) {
-    document.querySelectorAll(".srow").forEach(function (row) {
-      var data = /** @type {HTMLElement} */ (row).dataset;
-      row.addEventListener("mouseenter", function () {
-        if (calm.matches) return;
-        peekField.className = "f " + (data.peekTone || "");
-        peekField.replaceChildren();
-        if (data.peekSrc) {
-          var layer = document.createElement("div");
-          layer.className = "photo";
-          layer.style.backgroundImage = 'url("' + data.peekSrc + '")';
-          peekField.appendChild(layer);
-          peekField.classList.add("loaded");
-        }
-        peek.classList.add("on");
-      });
-      row.addEventListener("mouseleave", function () {
-        peek.classList.remove("on");
-      });
-      row.addEventListener("mousemove", function (e) {
-        var m = /** @type {MouseEvent} */ (e);
-        /** @type {HTMLElement} */ (peek).style.left = m.clientX + "px";
-        /** @type {HTMLElement} */ (peek).style.top = m.clientY + "px";
-      });
-    });
-  }
-
   // ---- marquee: clone past 2x viewport, animate by exactly one set ----
   var track = /** @type {HTMLElement | null} */ (document.querySelector(".marq-in"));
   var SPEED = 55; // px per second
