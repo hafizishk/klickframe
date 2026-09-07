@@ -158,6 +158,45 @@ def render_svg(path: Path, height: int) -> Image.Image:
     return img
 
 
+def set_svg_size(text: str, width: float, height: float) -> str:
+    """Replace the root <svg> width/height, editing only the opening tag.
+
+    Stripping them with a `(<svg\\b[^>]*?)\\s(?:width|height)=...` substitution
+    looks equivalent and is not: the scan consumes the `<svg` prefix along with
+    the first attribute, so the second one survives, and prepending fresh values
+    then yields a duplicate attribute and an XML parse error that fails the
+    render outright.
+    """
+    match = re.search(r"<svg\b[^>]*>", text)
+    if not match:
+        return text
+    tag = match.group(0)
+    stripped = re.sub(r'\s(?:width|height)\s*=\s*"[^"]*"', "", tag)
+    sized = stripped.replace("<svg", f'<svg width="{width}" height="{height}"', 1)
+    return text[: match.start()] + sized + text[match.end() :]
+
+
+def render_to_viewbox(path: Path, text: str, viewbox: tuple, height: int) -> Image.Image:
+    """Render with the viewport forced to the viewBox's own aspect ratio.
+
+    An SVG whose width/height disagree with its viewBox gets letterboxed inside
+    that viewport, so the rendered pixels no longer map linearly onto viewBox
+    user units. Measuring the ink against such a render and mapping it back
+    produces a crop in the wrong place: it cost the HSBC wordmark, which fell
+    outside a box computed from a file declaring 1200x800 against a viewBox of
+    aspect 3.22. Substituting the viewBox dimensions makes the mapping exact.
+    """
+    _, _, vb_w, vb_h = viewbox
+    swapped = set_svg_size(text, vb_w, vb_h)
+    with tempfile.NamedTemporaryFile(suffix=".svg", delete=False, mode="w", encoding="utf-8") as tmp:
+        tmp.write(swapped)
+        temp_path = Path(tmp.name)
+    try:
+        return render_svg(temp_path, height)
+    finally:
+        temp_path.unlink(missing_ok=True)
+
+
 def parse_viewbox(text: str) -> tuple[float, float, float, float] | None:
     match = re.search(r'viewBox\s*=\s*"\s*([-\d.eE]+)[,\s]+([-\d.eE]+)[,\s]+([-\d.eE]+)[,\s]+([-\d.eE]+)', text)
     return tuple(float(g) for g in match.groups()) if match else None  # type: ignore[return-value]
@@ -175,7 +214,7 @@ def process_svg(path: Path, slug: str) -> dict:
 
     # Measure the ink in pixels, then map back into viewBox user units so the
     # file stays vector.
-    probe = render_svg(path, MEASURE_HEIGHT)
+    probe = render_to_viewbox(path, text, viewbox, MEASURE_HEIGHT)
     box = ink_box(probe)
     if not box:
         return {"slug": slug, "error": "renders empty"}
@@ -198,14 +237,7 @@ def process_svg(path: Path, slug: str) -> dict:
         text,
         count=1,
     )
-    out_text = re.sub(r'(<svg\b[^>]*?)\swidth\s*=\s*"[^"]*"', r"\1", out_text, count=1)
-    out_text = re.sub(r'(<svg\b[^>]*?)\sheight\s*=\s*"[^"]*"', r"\1", out_text, count=1)
-    out_text = re.sub(
-        r"<svg\b",
-        f'<svg width="{new[2]}" height="{new[3]}"',
-        out_text,
-        count=1,
-    )
+    out_text = set_svg_size(out_text, new[2], new[3])
 
     out = DEST / f"{slug}.svg"
     out.write_text(out_text, encoding="utf-8")
