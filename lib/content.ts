@@ -69,25 +69,20 @@ export const STATEMENT = {
 } as const;
 
 /**
- * The work rail. Six of these are real, named projects from KlickFrame's own
- * feed, each carrying the reel that was shot for it; two are UNCONFIRMED
- * placeholders standing in for sectors the site is trying to win.
+ * The work rail — every card a real, named project with the reel shot for it.
+ * The two placeholder cards are gone, so nothing here is invented any more.
  *
  * `portrait` is per card rather than derived from position, because the crop
- * has to follow the footage: four of the reels are 9:16 and belong in a 3:4
- * card, but the wedding film is a 636x360 landscape and would be cropped to a
- * letterbox of its own middle in a portrait one. Ordering them so the aspects
- * still alternate is what keeps the rail's rhythm.
+ * has to follow the footage: the reels are 9:16 and belong in a 3:4 card, but
+ * the wedding film is a 636x360 landscape that a portrait card would reduce to
+ * a letterbox of its own middle.
  *
  * `small` narrows a card. The wedding film is genuinely low resolution, so it
- * is shown at a size that flatters it rather than one that exposes it — and
- * the break in width gives the rail some variety.
+ * is shown at a size that flatters it rather than one that exposes it.
  *
- * Sport lands late and the run opens on brand work. Sport is proof of the
- * capability, never the category, and the real four are captioned by brand and
- * event rather than by sport: Puma, Weston, Shopee, HSBC and On are what the
- * work was for, and naming them is what makes football and pickleball footage
- * read as brand work.
+ * Captions name the brand and the event rather than the sport: Puma, Weston,
+ * Shopee and HSBC are what the work was for, and naming them is what makes
+ * football, pickleball and netball footage read as brand work.
  */
 export const WORK = [
   {
@@ -104,18 +99,6 @@ export const WORK = [
   },
   {
     index: "02",
-    kicker: "Wedding",
-    // Real. Low resolution, hence `small` — see the note above.
-    title: "Wedding film",
-    meta: ["Photo, film", "Full day"],
-    image: "wed" as ImageKey,
-    tone: "f-wed" as FieldTone,
-    portrait: false,
-    small: true,
-    motion: true,
-  },
-  {
-    index: "03",
     kicker: "Live",
     // Real: coverage of the ASEAN Shopee Trophy.
     title: "ASEAN Shopee Trophy",
@@ -128,18 +111,7 @@ export const WORK = [
     focus: 0.03,
   },
   {
-    index: "04",
-    kicker: "Corporate",
-    // UNCONFIRMED — placeholder. No footage or photography for this yet.
-    title: "Annual conference, streamed live",
-    meta: ["Four cameras", "Two days"],
-    image: "corp" as ImageKey,
-    tone: "f-corp" as FieldTone,
-    portrait: false,
-    motion: false,
-  },
-  {
-    index: "05",
+    index: "03",
     kicker: "Sport",
     // Real: highlight film for Tibia by Picklebones.
     title: "Tibia by Picklebones",
@@ -150,18 +122,7 @@ export const WORK = [
     motion: true,
   },
   {
-    index: "06",
-    kicker: "Portrait",
-    // UNCONFIRMED — placeholder.
-    title: "Executive portrait series",
-    meta: ["Studio", "On location"],
-    image: "port" as ImageKey,
-    tone: "f-port" as FieldTone,
-    portrait: false,
-    motion: false,
-  },
-  {
-    index: "07",
+    index: "04",
     // "Live" rather than "Sport": this is match coverage, and live multi-camera
     // is the differentiator the whole site is built to sell.
     kicker: "Live",
@@ -173,10 +134,23 @@ export const WORK = [
     portrait: true,
     motion: true,
   },
+  {
+    index: "05",
+    kicker: "Wedding",
+    // Real. Low resolution, hence `small` — see the note above. Last by
+    // request, and the only landscape source in the set.
+    title: "Wedding film",
+    meta: ["Photo, film", "Full day"],
+    image: "wed" as ImageKey,
+    tone: "f-wed" as FieldTone,
+    portrait: false,
+    small: true,
+    motion: true,
+  },
 ] as const;
 
-// UNCONFIRMED — project count.
-export const WORK_NOTE = "Six of thirty-plus projects · Full portfolio on request";
+// UNCONFIRMED — the total. The five shown are real.
+export const WORK_NOTE = "Five of thirty-plus projects · Full portfolio on request";
 
 export const SERVICES = {
   slate: "Services",
@@ -347,7 +321,7 @@ export const CONTENT_HOLDS = [
   "Process steps — recce, run sheet, crew arrival timings",
   "Kit ownership and no-markup claim",
   "In-house edit claim (the person who shot it edits it)",
-  "Work-rail captions for the two placeholder cards (04 Corporate, 06 Portrait), and the project count",
+  "The project count — \"thirty-plus\". Every card shown is real work.",
   "Studio address and email",
   "Non-sport photography for the work rail and sector peeks",
 ] as const;
