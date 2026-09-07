@@ -2,13 +2,16 @@
  * Turns raw reel downloads into web-ready video, plus the poster frame each one
  * falls back to.
  *
- *   1. Drop the downloads in `media-src/` named for their slot:
+ *   1. Put the downloads in `assets/reels/` named for their slot:
  *      wedding.mp4, corporate.mp4, brand.mp4, live.mp4, sport.mp4,
  *      portrait.mp4, food.mp4, hero.mp4
  *   2. npm run media
  *
- * Writes `public/videos/<name>.mp4` and `<name>-poster.jpg`. `media-src/` is
- * git-ignored, so the heavy originals never enter the repository.
+ * Writes `public/videos/<name>.mp4`, `.webm` and `<name>-poster.jpg`, all
+ * git-ignored: one command reproduces them from the sources.
+ *
+ * `media-src/` still works as a local, git-ignored scratch drop for anyone who
+ * would rather not commit an original.
  *
  * What it does to each file, and why:
  *   - strips the audio entirely. Nothing on the page autoplays with sound, so
@@ -29,7 +32,8 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync, statSync } from "node:fs";
 import { join, parse } from "node:path";
 
-const SRC = "media-src";
+// Committed sources first; media-src/ is the git-ignored local alternative.
+const SRC = existsSync("assets/reels") ? "assets/reels" : "media-src";
 const DEST = join("public", "videos");
 
 /** Slot names the site knows about — see VIDEOS in lib/images.ts. */
@@ -57,9 +61,9 @@ function seconds(file) {
 
 if (!existsSync(SRC)) {
   console.error(
-    `No ${SRC}/ directory.\n\n` +
-      `Create it, drop the reel downloads in named for their slot, and re-run:\n` +
-      SLOTS.map((s) => `  ${SRC}/${s}.mp4`).join("\n"),
+    `No assets/reels/ or media-src/ directory.\n\n` +
+      `Create one, put the reel downloads in named for their slot, and re-run:\n` +
+      SLOTS.map((s) => `  assets/reels/${s}.mp4`).join("\n"),
   );
   process.exit(1);
 }
