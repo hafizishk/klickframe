@@ -125,13 +125,26 @@ const sizeOf = (sitePath) => {
   const file = join(OUT, sitePath.replace(/^\//, ""));
   return existsSync(file) ? statSync(file).size : 0;
 };
-const reelBytes = reelTags.reduce(
+// base64 is 4 bytes per 3.
+const projected = (bytes) => (bytes * 1.34) / 1024 / 1024;
+const mp4Only = reelTags.reduce((total, [, src]) => total + sizeOf(src), 0);
+const bothFormats = reelTags.reduce(
   (total, [, src]) => total + sizeOf(src) + sizeOf(src.replace(/\.mp4$/, ".webm")),
   0,
 );
-// base64 is 4 bytes per 3.
-const projectedMB = (reelBytes * 1.34) / 1024 / 1024;
-const inlineReels = projectedMB <= VIDEO_BUDGET_MB;
+
+// Degrade a step at a time rather than straight to stills. Carrying both
+// formats is the ideal; dropping the WebM halves the weight and still plays
+// everywhere H.264 is available, which is everywhere except a few Chromium
+// builds; posters are the last resort.
+const reelMode =
+  projected(bothFormats) <= VIDEO_BUDGET_MB
+    ? "both"
+    : projected(mp4Only) <= VIDEO_BUDGET_MB
+      ? "mp4"
+      : "posters";
+const inlineReels = reelMode !== "posters";
+const projectedMB = reelMode === "both" ? projected(bothFormats) : projected(mp4Only);
 
 html = html.replace(/<video\b([^>]*)><\/video>|<video\b([^>]*)\/>/g, (tag, a, b) => {
   const attrs = a ?? b ?? "";
@@ -141,7 +154,7 @@ html = html.replace(/<video\b([^>]*)><\/video>|<video\b([^>]*)\/>/g, (tag, a, b)
 
   if (inlineReels && src) {
     const mp4 = dataUri(src);
-    const webm = dataUri(src.replace(/\.mp4$/, ".webm"));
+    const webm = reelMode === "both" ? dataUri(src.replace(/\.mp4$/, ".webm")) : null;
     if (mp4 || webm) {
       stats.videos++;
       let kept = attrs
@@ -280,9 +293,12 @@ console.log(
       target: TARGET,
       sizeMB: +(Buffer.byteLength(out) / 1024 / 1024).toFixed(2),
       inlined: stats,
-      reels: inlineReels
-        ? `inlined (${projectedMB.toFixed(1)} MB of ${VIDEO_BUDGET_MB} MB budget)`
-        : `dropped to posters — ${projectedMB.toFixed(1)} MB would exceed the ${VIDEO_BUDGET_MB} MB budget`,
+      reels:
+        reelMode === "both"
+          ? `MP4 + WebM inlined (${projectedMB.toFixed(1)} MB of ${VIDEO_BUDGET_MB} MB budget)`
+          : reelMode === "mp4"
+            ? `MP4 only, WebM dropped to fit (${projectedMB.toFixed(1)} MB of ${VIDEO_BUDGET_MB} MB budget)`
+            : `dropped to posters — even MP4 alone would exceed the ${VIDEO_BUDGET_MB} MB budget`,
       awaitingPhotos,
       danglingRefs: dangling,
       trulyMissing,

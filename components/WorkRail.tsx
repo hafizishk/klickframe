@@ -23,7 +23,16 @@ export function WorkRail() {
             const video = project.motion ? firstAvailable(VIDEOS[project.image]) : undefined;
             const photo = IMAGES[project.image];
             return (
-              <article className="case" key={project.index}>
+              <article
+                className={[
+                  "case",
+                  project.portrait ? "case--portrait" : "",
+                  "small" in project && project.small ? "case--small" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+                key={project.index}
+              >
                 <MediaField
                   tone={project.tone}
                   video={video}

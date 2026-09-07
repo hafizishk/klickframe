@@ -39,12 +39,28 @@
   // preload="none" in the markup means nothing is fetched until this decides
   // it is worth fetching. Six autoplaying videos would otherwise all download
   // at once, on a page whose whole pitch is that it feels fast.
-  function addSource(video, src, type) {
-    if (!src) return;
+
+  // Reveal the poster frame instead of the reel. The poster is a real frame
+  // from the film, so a slot that cannot play still shows the work rather than
+  // falling back to its gradient.
+  function showPoster(video, field) {
+    if (video.poster) field.classList.add("loaded");
+  }
+
+  function addSource(video, field, src, type, onFail) {
+    if (!src) return 0;
     var source = document.createElement("source");
     source.src = src;
     source.type = type;
+    // The error fires HERE, on the <source>, not on the <video>. A media
+    // element with source children does not reliably fire its own error when
+    // resource selection fails — a browser with no decoder for the only format
+    // offered simply stops, with video.error still null. Listening on the
+    // element alone left the poster sitting at opacity 0 and the slot showing
+    // its gradient, which is the one case this fallback exists for.
+    source.addEventListener("error", onFail);
     video.appendChild(source);
+    return 1;
   }
 
   var reels = document.querySelectorAll(".f .motion[data-src]");
@@ -79,11 +95,17 @@
             if (entry.isIntersecting) {
               if (!started) {
                 started = true;
+                var failed = 0;
+                var offered = 0;
+                var onFail = function () {
+                  failed++;
+                  if (failed >= offered) showPoster(video, field);
+                };
                 // WebM first — Chrome and Firefox take it at roughly two
                 // thirds the bytes. Safari ignores it and falls through to the
                 // MP4, which is the only one it will play.
-                addSource(video, video.dataset.srcWebm, "video/webm");
-                addSource(video, video.dataset.src, "video/mp4");
+                offered += addSource(video, field, video.dataset.srcWebm, "video/webm", onFail);
+                offered += addSource(video, field, video.dataset.src, "video/mp4", onFail);
                 video.load();
               }
               var play = video.play();
@@ -102,15 +124,9 @@
       video.addEventListener("loadeddata", function () {
         field.classList.add("loaded");
       });
-      // If every source is missing or refused, fall back to the poster rather
-      // than fading in a black rectangle. The error fires on the <video> only
-      // once all its <source> children have failed.
+      // Belt and braces: some paths do fire on the element itself.
       video.addEventListener("error", function () {
-        if (video.poster) {
-          field.classList.add("loaded");
-        } else {
-          field.classList.remove("loaded");
-        }
+        showPoster(video, field);
       });
 
       observer.observe(field);

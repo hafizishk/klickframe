@@ -50,7 +50,7 @@ export const HERO = {
   slate: "Singapore · Est. KlickFrame SG",
   image: "hero" as ImageKey,
   tone: "f-night" as FieldTone,
-  /** Play VIDEOS.hero here when the file exists, else the photograph. */
+  /** Real: HSBC x On race day. Falls back to the match photograph. */
   motion: true,
 } as const;
 
@@ -69,67 +69,93 @@ export const STATEMENT = {
 } as const;
 
 /**
- * UNCONFIRMED — every caption below is invented for the mock.
+ * The work rail. Five of these are real, named projects from KlickFrame's own
+ * feed, each carrying the reel that was shot for it; two are UNCONFIRMED
+ * placeholders standing in for sectors the site is trying to win.
  *
- * `motion: true` plays the matching reel from VIDEOS in that slot, falling back
- * to the photograph and then the gradient. It is set on the portrait cards
- * (02, 04, 06) because reels are shot 9:16 and those slots are 3:4 — the
- * landscape cards would crop a vertical reel to a letterbox of its middle.
+ * `portrait` is per card rather than derived from position, because the crop
+ * has to follow the footage: four of the reels are 9:16 and belong in a 3:4
+ * card, but the wedding film is a 636x360 landscape and would be cropped to a
+ * letterbox of its own middle in a portrait one. Ordering them so the aspects
+ * still alternate is what keeps the rail's rhythm.
+ *
+ * `small` narrows a card. The wedding film is genuinely low resolution, so it
+ * is shown at a size that flatters it rather than one that exposes it — and
+ * the break in width gives the rail some variety.
+ *
+ * Sport lands late and the run opens on brand work. Sport is proof of the
+ * capability, never the category, and the real four are captioned by brand and
+ * event rather than by sport: Puma, Weston, Shopee, HSBC and On are what the
+ * work was for, and naming them is what makes football and pickleball footage
+ * read as brand work.
  */
 export const WORK = [
   {
     index: "01",
-    kicker: "Corporate",
-    title: "Annual conference, streamed live",
-    meta: ["Four cameras", "Two days"],
-    image: "corp" as ImageKey,
-    tone: "f-corp" as FieldTone,
-    motion: false,
+    kicker: "Brand",
+    // Real: product film for Puma Ultimate 9, with Weston Corp and Flair.
+    title: "Puma Ultimate 9, with Weston Corp",
+    meta: ["Product film", "On location"],
+    image: "prod" as ImageKey,
+    tone: "f-prod" as FieldTone,
+    portrait: true,
+    motion: true,
   },
   {
     index: "02",
     kicker: "Wedding",
-    title: "Solemnisation and banquet",
-    meta: ["Photo, film", "Live feed"],
+    // Real. Low resolution, hence `small` — see the note above.
+    title: "Wedding film",
+    meta: ["Photo, film", "Full day"],
     image: "wed" as ImageKey,
     tone: "f-wed" as FieldTone,
+    portrait: false,
+    small: true,
     motion: true,
   },
   {
     index: "03",
-    kicker: "Brand",
-    title: "Footwear campaign film",
-    meta: ["Studio", "Product"],
-    image: "prod" as ImageKey,
-    tone: "f-prod" as FieldTone,
-    motion: false,
+    kicker: "Live",
+    // Real: coverage of the ASEAN Shopee Trophy.
+    title: "ASEAN Shopee Trophy",
+    meta: ["Event film", "Activation"],
+    image: "stage" as ImageKey,
+    tone: "f-stage" as FieldTone,
+    portrait: true,
+    motion: true,
   },
   {
     index: "04",
-    kicker: "Live",
-    title: "Festival main stage",
-    meta: ["Multi-cam", "Same-day cuts"],
-    image: "stage" as ImageKey,
-    tone: "f-stage" as FieldTone,
-    motion: true,
+    kicker: "Corporate",
+    // UNCONFIRMED — placeholder. No footage or photography for this yet.
+    title: "Annual conference, streamed live",
+    meta: ["Four cameras", "Two days"],
+    image: "corp" as ImageKey,
+    tone: "f-corp" as FieldTone,
+    portrait: false,
+    motion: false,
   },
   {
     index: "05",
     kicker: "Sport",
-    title: "League season coverage",
-    meta: ["Live graphics", "Full season"],
+    // Real: highlight film for Tibia by Picklebones.
+    title: "Tibia by Picklebones",
+    meta: ["Highlight film", "Multi-sport"],
     image: "sport" as ImageKey,
     tone: "f-sport" as FieldTone,
-    motion: false,
+    portrait: true,
+    motion: true,
   },
   {
     index: "06",
     kicker: "Portrait",
+    // UNCONFIRMED — placeholder.
     title: "Executive portrait series",
     meta: ["Studio", "On location"],
     image: "port" as ImageKey,
     tone: "f-port" as FieldTone,
-    motion: true,
+    portrait: false,
+    motion: false,
   },
 ] as const;
 
@@ -305,7 +331,7 @@ export const CONTENT_HOLDS = [
   "Process steps — recce, run sheet, crew arrival timings",
   "Kit ownership and no-markup claim",
   "In-house edit claim (the person who shot it edits it)",
-  "Every project caption in the work rail, and the project count",
+  "Work-rail captions for the two placeholder cards (04 Corporate, 06 Portrait), and the project count",
   "Studio address and email",
   "Non-sport photography for the work rail and sector peeks",
 ] as const;

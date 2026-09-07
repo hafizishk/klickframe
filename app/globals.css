@@ -450,11 +450,19 @@ nav a:focus-visible::after {
   flex: 0 0 clamp(280px, 42vw, 620px);
   scroll-snap-align: start;
 }
+/* Aspect follows the footage, not the card's position in the rail: four reels
+   are 9:16 and want a 3:4 crop, while the wedding film is a 636x360 landscape
+   that a portrait card would reduce to a letterbox of its own middle. The
+   ordering in lib/content.ts is what keeps the aspects alternating. */
 .case .f {
   aspect-ratio: 4 / 3;
 }
-.case:nth-child(even) .f {
+.case--portrait .f {
   aspect-ratio: 3 / 4;
+}
+/* A narrower card for material that does not stand up to being shown large. */
+.case--small {
+  flex-basis: clamp(220px, 27vw, 400px);
 }
 .case .idx {
   position: absolute;
