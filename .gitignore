@@ -26,3 +26,6 @@ media-src/
 # reproduces.
 public/videos/*
 !public/videos/README.md
+
+# Raw logo drops — run `npm run logos` to normalise them into public/logos/
+logo-src/

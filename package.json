@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "export": "STATIC_EXPORT=1 next build",
     "bundle": "npm run export && node scripts/bundle.mjs",
-    "media": "node scripts/media.mjs"
+    "media": "node scripts/media.mjs",
+    "logos": "python3 scripts/logos.py"
   },
   "dependencies": {
     "next": "^16.3.4",

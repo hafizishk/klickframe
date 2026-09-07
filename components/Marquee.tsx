@@ -1,4 +1,4 @@
-import { publicFileExists } from "@/lib/assets";
+import { firstAvailable } from "@/lib/assets";
 import { CLIENTS, logoSlug } from "@/lib/content";
 
 /**
@@ -24,8 +24,17 @@ export function Marquee() {
       <div className="marq-in">
         <div className="marq-set">
           {CLIENTS.map((client) => {
-            const logo = `/logos/${logoSlug(client)}.svg`;
-            return publicFileExists(logo) ? (
+            const slug = logoSlug(client);
+            // SVG preferred, but not required: the wall renders every logo as a
+            // flat silhouette, so a transparent PNG is indistinguishable from
+            // vector at these sizes — and tracing a raster logo to fake vector
+            // would only introduce inaccuracy in a trademark.
+            const logo = firstAvailable(
+              `/logos/${slug}.svg`,
+              `/logos/${slug}.png`,
+              `/logos/${slug}.webp`,
+            );
+            return logo ? (
               // Plain <img>, not next/image: these are SVGs, which the image
               // optimiser passes through untouched anyway (and only with
               // dangerouslyAllowSVG), the static export has no optimiser to run,
