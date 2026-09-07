@@ -27,14 +27,12 @@ long wordmark). Set to one height, a square badge carries far more visual mass
 than a wordmark and dominates the row. The manifest therefore carries a per-logo
 scale that eases badges down relative to wordmarks.
 
-**Tonal structure.** A flat silhouette destroys any logo whose identity lives in
-internal colour: a club crest becomes a featureless disc, a wordmark knocked out
-of a coloured field becomes a solid block. Both happened here and neither trips
-a transparency check, because the shape is not a rectangle. So each logo is
-measured: a single-colour mark (low luminance variance among its opaque pixels)
-is silhouetted, and a multi-tone one is desaturated instead, keeping the form
-readable. The threshold is far from either cluster — this set measured sd 0-18
-for flat marks and 94-103 for tonal ones.
+**Contrast against the band.** The logos run in their own colours, on the bone
+band the marquee sets for exactly that reason: four of these files are pure
+black artwork that would be invisible on the dark page. The mirror-image risk
+is a logo drawn white for dark backgrounds, which disappears on bone. Each
+logo's mean luminance is measured and anything too light to hold is flagged
+rather than shipped looking absent.
 
 **Transparency** is the fourth thing that matters, and the one that looks broken
 rather than merely uneven: a logo on an opaque card silhouettes into a solid
@@ -66,9 +64,9 @@ MEASURE_HEIGHT = 400  # only used to locate the ink; never written out
 BG_TOLERANCE = 32
 RASTER_TYPES = {".png", ".jpg", ".jpeg", ".webp"}
 
-# Luminance spread above which a logo is treated as tonal rather than flat.
-# Comfortably between the two clusters this set falls into.
-TONAL_SD = 40
+# Mean luminance above which a logo will not hold against the bone band
+# (#F4F2ED = 244). White-on-dark artwork lands here.
+TOO_LIGHT = 215
 
 
 def optical_scale(aspect: float) -> float:
@@ -88,8 +86,8 @@ def optical_scale(aspect: float) -> float:
     return 1.0
 
 
-def treatment_for(img: Image.Image) -> tuple[str, float]:
-    """Silhouette a flat mark; desaturate one that carries internal tone."""
+def luminance(img: Image.Image) -> float:
+    """Mean luminance of the opaque pixels — how the mark sits against a band."""
     px = img.convert("RGBA").load()
     step_x = max(1, img.width // 120)
     step_y = max(1, img.height // 120)
@@ -100,10 +98,8 @@ def treatment_for(img: Image.Image) -> tuple[str, float]:
             if a > 200:
                 lums.append(0.2126 * r + 0.7152 * g + 0.0722 * b)
     if not lums:
-        return "silhouette", 0.0
-    mean = sum(lums) / len(lums)
-    sd = (sum((l - mean) ** 2 for l in lums) / len(lums)) ** 0.5
-    return ("tone" if sd > TONAL_SD else "silhouette"), round(sd, 1)
+        return 0.0
+    return round(sum(lums) / len(lums), 1)
 
 
 def has_embedded_raster(text: str) -> bool:
@@ -215,7 +211,7 @@ def process_svg(path: Path, slug: str) -> dict:
     out.write_text(out_text, encoding="utf-8")
 
     aspect = new[2] / new[3]
-    treatment, sd = treatment_for(probe.crop(box))
+    lum = luminance(probe.crop(box))
     trimmed = round(100 * (1 - (box[2] - box[0]) * (box[3] - box[1]) / (probe.width * probe.height)))
     return {
         "slug": slug,
@@ -224,10 +220,10 @@ def process_svg(path: Path, slug: str) -> dict:
         "height": round(new[3]),
         "aspect": round(aspect, 2),
         "scale": optical_scale(aspect),
-        "treatment": treatment,
-        "sd": sd,
+        "luminance": lum,
         "kb": round(out.stat().st_size / 1024, 1),
-        "note": f"vector, trimmed {trimmed}% of canvas" if trimmed > 2 else "vector",
+        "note": ("TOO LIGHT for the bone band — will look absent" if lum > TOO_LIGHT
+                 else (f"vector, trimmed {trimmed}% of canvas" if trimmed > 2 else "vector")),
     }
 
 
@@ -249,7 +245,7 @@ def process_raster(path: Path, slug: str, note_prefix: str = "") -> dict:
     img.save(out, optimize=True)
 
     solid = img.getchannel("A").getextrema() == (255, 255)
-    treatment, sd = treatment_for(img)
+    lum = luminance(img)
     aspect = img.width / img.height
     trimmed = round(100 * (1 - (box[2] - box[0]) * (box[3] - box[1]) / (before[0] * before[1])))
     note = "NO TRANSPARENCY — will render as a solid block" if solid else (
@@ -263,10 +259,10 @@ def process_raster(path: Path, slug: str, note_prefix: str = "") -> dict:
         "height": img.height,
         "aspect": round(aspect, 2),
         "scale": optical_scale(aspect),
-        "treatment": treatment,
-        "sd": sd,
+        "luminance": lum,
         "kb": round(out.stat().st_size / 1024, 1),
-        "note": note_prefix + note,
+        "note": note_prefix + ("TOO LIGHT for the bone band — will look absent"
+                               if lum > TOO_LIGHT else note),
     }
 
 
@@ -304,7 +300,7 @@ def main() -> int:
             rows.append(row)
 
     manifest = {
-        r["slug"]: {k: r[k] for k in ("file", "width", "height", "scale", "treatment")}
+        r["slug"]: {k: r[k] for k in ("file", "width", "height", "scale")}
         for r in rows
     }
     MANIFEST.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -314,7 +310,7 @@ def main() -> int:
         print(
             f"  {r['slug']:<{pad}}  {r['width']:>5}x{r['height']:<5} "
             f"aspect {r['aspect']:>5}  scale {r['scale']:<5} "
-            f"{r['treatment']:<10} sd {r['sd']:>5}  {r['kb']:>7} KB   {r['note']}"
+            f"lum {r['luminance']:>5}  {r['kb']:>7} KB   {r['note']}"
         )
 
     if failed:

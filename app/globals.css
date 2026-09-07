@@ -633,10 +633,17 @@ nav a:focus-visible::after {
 }
 
 /* ---------- marquee ---------- */
+/* The client wall is the one band on the dark page that runs light, and it has
+   to: the logos are shown in their own colours, and four of these files are
+   pure black artwork that would be invisible on #070707. Bone is already the
+   page's second ground (Sectors, Contact), and it is the background most brand
+   marks are drawn for. */
 .marq {
-  border-block: 1px solid var(--hair);
+  background: var(--bone);
+  color: var(--black);
+  border-block: 1px solid var(--hair-d);
   overflow: hidden;
-  padding-block: 26px;
+  padding-block: 30px;
 }
 .marq-in {
   display: flex;
@@ -653,39 +660,30 @@ nav a:focus-visible::after {
 .marq-set {
   align-items: center;
 }
+/* Fallback for a client with no logo file yet: the name in type, weighted to
+   sit alongside the logos rather than shout over them. */
 .marq span {
   font-size: clamp(19px, 2.2vw, 32px);
   font-weight: 600;
-  color: rgba(244, 242, 237, 0.4);
+  color: rgba(7, 7, 7, 0.45);
   white-space: nowrap;
   font-variation-settings: "wdth" 100;
 }
-/* Nine brand palettes would tear a near-monochrome page apart, so no logo is
-   shown in its own colours. Height is normalised optically per logo via
+/* Logos run in their own colours. Height is normalised optically per logo via
    --logo-scale from the manifest; width follows the aspect ratio carried by the
-   width/height attributes. */
+   width/height attributes, which the marquee needs in order to measure a set.
+
+   A touch of desaturation and a hair off full opacity stops nine competing
+   brand palettes from overpowering a near-monochrome page, without draining
+   the colour that is the point of showing them. */
 .marq .logo {
   height: calc(clamp(18px, 2.1vw, 30px) * var(--logo-scale, 1));
   width: auto;
   display: block;
+  filter: saturate(0.9);
+  opacity: 0.88;
 }
-/* A flat single-colour mark: crush it to a silhouette and lift it to white, at
-   exactly the value the text names use, so logos and type read as one row
-   rather than as a pasted-in sponsor board. */
-.marq .logo--silhouette {
-  filter: brightness(0) invert(1);
-  opacity: 0.4;
-}
-/* A mark carrying internal tone — a club crest, a wordmark knocked out of a
-   coloured field — would silhouette into a featureless blob, because the detail
-   that identifies it IS the colour. Desaturate instead: the form survives, and
-   the page stays monochrome. Slightly brighter and more opaque than the
-   silhouettes, since a mid-grey sits lower against #070707 than flat white
-   does at 0.4. */
-.marq .logo--tone {
-  filter: grayscale(1) brightness(1.3) contrast(1.05);
-  opacity: 0.58;
-}
+
 @keyframes slide {
   to {
     transform: translateX(calc(-1 * var(--set, 50%)));

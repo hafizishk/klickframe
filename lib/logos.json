@@ -3,63 +3,54 @@
     "file": "/logos/aff.svg",
     "height": 363,
     "scale": 1.0,
-    "treatment": "tone",
     "width": 276
   },
   "balestier-khalsa": {
     "file": "/logos/balestier-khalsa.png",
     "height": 160,
     "scale": 0.85,
-    "treatment": "tone",
     "width": 160
   },
   "fas": {
     "file": "/logos/fas.png",
     "height": 160,
     "scale": 1.0,
-    "treatment": "silhouette",
     "width": 354
   },
   "hsbc": {
     "file": "/logos/hsbc.svg",
     "height": 40,
     "scale": 1.0,
-    "treatment": "tone",
     "width": 147
   },
   "on": {
     "file": "/logos/on.svg",
     "height": 792,
     "scale": 1.0,
-    "treatment": "silhouette",
     "width": 406
   },
   "puma": {
     "file": "/logos/puma.svg",
     "height": 445,
     "scale": 1.0,
-    "treatment": "silhouette",
     "width": 887
   },
   "shopee": {
     "file": "/logos/shopee.svg",
     "height": 372,
     "scale": 1.0,
-    "treatment": "silhouette",
     "width": 261
   },
   "syl": {
     "file": "/logos/syl.png",
     "height": 160,
     "scale": 1.0,
-    "treatment": "silhouette",
     "width": 395
   },
   "weston": {
     "file": "/logos/weston.png",
     "height": 160,
     "scale": 1.0,
-    "treatment": "silhouette",
     "width": 344
   }
 }

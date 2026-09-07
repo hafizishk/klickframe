@@ -6,7 +6,6 @@ type LogoEntry = {
   width: number;
   height: number;
   scale: number;
-  treatment: "silhouette" | "tone";
 };
 
 const MANIFEST = logos as Record<string, LogoEntry>;
@@ -28,10 +27,10 @@ const MANIFEST = logos as Record<string, LogoEntry>;
  *   have laid out, gets zero, and the loop breaks.
  * - `scale` evens out optical weight. A square crest at a wordmark's height
  *   carries far more visual mass and would dominate the row.
- * - `treatment` decides the filter. A flat single-colour mark silhouettes
- *   cleanly; one carrying internal tone — a club crest, a wordmark knocked out
- *   of a coloured field — turns into a featureless blob if silhouetted, so it
- *   is desaturated instead. See scripts/logos.py for how it is measured.
+ *
+ * Logos run in their own colours, which is why this band is bone rather than
+ * the page's black: four of these files are pure black artwork that would be
+ * invisible on it.
  *
  * The names are real engaged clients, confirmed by Hafiz — see CLIENTS in
  * lib/content.ts for the ordering rationale.
@@ -50,7 +49,7 @@ export function Marquee() {
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 key={client}
-                className={`logo logo--${logo.treatment}`}
+                className="logo"
                 src={logo.file}
                 alt={client}
                 width={logo.width}
