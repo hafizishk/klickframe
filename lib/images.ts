@@ -10,16 +10,19 @@
  * Nothing here is stock. A random stock landscape in the work rail reads as
  * filler and undercuts the pitch; a gradient reads as art direction.
  *
- * Where each one lands:
+ * Where each one lands (the rail is defined by WORK in lib/content.ts, so this
+ * list follows it rather than the other way round):
  *   hero   full-viewport hero. Portrait crops fine (biased to `center 38%`).
  *          Needs a dark lower third or the white headline stops holding.
- *   corp   work rail 01, landscape 4:3
- *   wed    work rail 02, portrait 3:4
- *   prod   work rail 03, landscape 4:3
- *   stage  work rail 04, portrait 3:4
- *   sport  work rail 05, landscape 4:3
- *   port   work rail 06, portrait 3:4
- *   food   unused — no work-rail slot and no sector photography
+ *   prod   work rail 01 — Puma Ultimate 9 x Weston Corp
+ *   stage  work rail 02 — ASEAN Shopee Trophy
+ *   sport  work rail 03 — Tibia by Picklebones
+ *   hsbc   work rail 04 — HSBC netball
+ *   wed    work rail 05 — wedding film, landscape and shown small
+ *   iwl    FAS Island Wide League, the season-long live broadcast
+ *   corp   unused — no boardroom still yet
+ *   port   unused — no portrait still yet
+ *   food   unused
  */
 export const IMAGES = {
   /** Client-supplied: Malaysia v Singapore, centre circle. The one real asset. */
@@ -33,6 +36,12 @@ export const IMAGES = {
   food: "/images/food.jpg",
   /** HSBC netball. No stills supplied, so this falls straight to the reel. */
   hsbc: "/images/hsbc.jpg",
+  /**
+   * FAS Island Wide League — the live broadcast. Frames off the stream carry
+   * the FAS and Island Wide League bugs and KlickFrame's own KTV mark, which
+   * is the on-screen-graphics claim shown rather than stated.
+   */
+  iwl: "/images/iwl.jpg",
 } as const;
 
 export type ImageKey = keyof typeof IMAGES;
@@ -62,6 +71,7 @@ export const VIDEOS = {
   port: "/videos/portrait.mp4",
   food: "/videos/food.mp4",
   hsbc: "/videos/hsbc.mp4",
+  iwl: "/videos/iwl.mp4",
 } as const;
 
 /** Poster frame written next to each video by `npm run media`. */
