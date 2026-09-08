@@ -155,40 +155,40 @@ export const WORK_NOTE = "Five of thirty-plus projects · Full portfolio on requ
 export const SERVICES = {
   slate: "Services",
   headline: "Four things, done end to end.",
-  standfirst:
-    "No agency layers, no subcontracted second unit. You brief the person who will be holding the camera.",
+  standfirst: "No agency layers. You brief the person holding the camera.",
+  /**
+   * One line each, and short enough that it stays one line in the column —
+   * measured at 1440px, the body wraps past roughly 57 characters. The client's
+   * note was that this section read as too wordy; a second line is what makes
+   * four services look like an essay, and the tags carry the detail anyway.
+   */
   items: [
     {
       n: "01",
       title: "Photography",
-      body: "Full or half-day coverage, shot and graded in house. Events, corporate, product, interiors and portraits.",
-      // UNCONFIRMED — "Same-night preview set" is a turnaround promise.
-      tags: ["Same-night preview set", "Press and web exports", "Second shooter available"],
+      body: "Events, corporate, product, portraits. Graded in house.",
+      // UNCONFIRMED — "Same-night preview" is a turnaround promise.
+      tags: ["Same-night preview", "Press and web exports", "Second shooter"],
     },
     {
       n: "02",
       title: "Film",
-      body: "From a single-camera testimonial to a scripted campaign piece, with the edit, sound and colour handled here.",
-      tags: ["Brand and campaign films", "Highlight reels", "Vertical cutdowns", "Licensed music"],
+      body: "Testimonials to campaign films. Cut and graded here.",
+      tags: ["Campaign films", "Highlight reels", "Vertical cutdowns"],
     },
     {
       n: "03",
       title: "Live production",
-      // The differentiator. Sport is proof of the capability, never the category.
-      body: "Multi-camera, switched live, with your graphics on screen and your logo where it belongs. Streamed to your own channels, recorded clean for later edits.",
-      tags: [
-        "Hybrid conferences",
-        "Town halls",
-        "Ceremonies",
-        "Sport with live scoring",
-        "Sponsor slates",
-      ],
+      // The differentiator, stated flat: few Singapore studios cut live with
+      // graphics on screen, so the line does not need a second clause to sell.
+      body: "Multi-camera, switched live, your graphics on screen.",
+      tags: ["Hybrid conferences", "Town halls", "Live scoring"],
     },
     {
       n: "04",
       title: "Retainers",
-      body: "A monthly shoot day and a steady supply of assets, for teams who have run out of things to post.",
-      tags: ["Monthly shoot days", "Asset libraries", "Template packs", "Priority dates"],
+      body: "A monthly shoot day for teams who post constantly.",
+      tags: ["Monthly shoot days", "Asset libraries", "Priority dates"],
     },
   ],
 } as const;
@@ -196,41 +196,50 @@ export const SERVICES = {
 /**
  * Order is deliberate and settled: the first is read, the last is scrolled
  * past. KlickFrame SG are not a sports specialist — do not promote Sport.
+ *
+ * Kept to a single short line each. The client's note on the first pass was
+ * that this section and Services read as too wordy, and a sector list is
+ * scanned rather than read: the name does the work and the line underneath
+ * only has to say what the job actually is.
+ *
+ * Held under ~44 characters so each one sets on a single line in the right-hand
+ * column at 1440px. Six rows of two wrapped lines is the density the client was
+ * reacting to; six single lines read as a list.
  */
 export const SECTORS = [
   {
     title: "Weddings",
-    body: "Solemnisations, ceremonies and banquets, plus a live feed for family who can't fly in.",
+    body: "Ceremony, banquet, live feed for family.",
     image: "wed" as ImageKey,
     tone: "f-wed" as FieldTone,
   },
   {
     title: "Corporate",
-    body: "Conferences, D&Ds, town halls and launches, with hybrid streaming built in.",
+    body: "Conferences, town halls, D&Ds. Hybrid.",
     image: "corp" as ImageKey,
     tone: "f-corp" as FieldTone,
   },
   {
     title: "Brands & agencies",
-    body: "Product films, campaign stills and content packs, studio setup through final grade.",
+    body: "Product films, stills, content packs.",
     image: "prod" as ImageKey,
     tone: "f-prod" as FieldTone,
   },
   {
     title: "Live events",
-    body: "Festivals, showcases and community days. Multi-camera coverage, same-day clips.",
+    body: "Festivals and showcases. Same-day clips.",
     image: "stage" as ImageKey,
     tone: "f-stage" as FieldTone,
   },
   {
     title: "Sport",
-    body: "Clubs, leagues and race days. Match streams with live scoring, season photography.",
+    body: "Clubs, leagues, race days. Live scoring.",
     image: "sport" as ImageKey,
     tone: "f-sport" as FieldTone,
   },
   {
     title: "F&B & retail",
-    body: "Menu shoots, venue stills and short-form video for outlets and franchise groups.",
+    body: "Menu shoots, venue stills, short-form video.",
     image: "food" as ImageKey,
     tone: "f-food" as FieldTone,
   },
