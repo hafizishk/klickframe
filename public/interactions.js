@@ -133,6 +133,36 @@
     });
   }
 
+  // ---- services: the sticky photograph follows whichever row you are reading
+  // The shots are stacked in source order alongside the rows, so row i owns
+  // shot i — no lookup table to keep in sync with the content file.
+  var svcRows = document.querySelectorAll(".cap-item");
+  var svcShots = document.querySelectorAll(".cap-media .cap-shot");
+  if (svcRows.length && svcShots.length === svcRows.length) {
+    var showShot = function (i) {
+      svcShots.forEach(function (shot, j) {
+        shot.classList.toggle("is-on", i === j);
+      });
+    };
+    // A band across the middle of the viewport: a row claims the picture as it
+    // crosses the centre, which is where the eye is, rather than as it clips
+    // the bottom edge. Nothing fires above the first row or below the last, so
+    // the nearest one simply stays on.
+    var svcSpy = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var i = Array.prototype.indexOf.call(svcRows, entry.target);
+          if (i >= 0) showShot(i);
+        });
+      },
+      { rootMargin: "-45% 0px -45% 0px" },
+    );
+    svcRows.forEach(function (row) {
+      svcSpy.observe(row);
+    });
+  }
+
   // ---- marquee: clone past 2x viewport, animate by exactly one set ----
   var track = /** @type {HTMLElement | null} */ (document.querySelector(".marq-in"));
   var SPEED = 55; // px per second

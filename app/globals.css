@@ -523,6 +523,38 @@ nav a:focus-visible::after {
   color: rgba(244, 242, 237, 0.68);
   max-width: 32ch;
 }
+/* The photograph beside the sticky heading. All four are stacked in one box and
+   cross-faded, so scrolling between services never shows an undecoded image.
+   Only the `.is-on` one is painted; the first carries it from the server, so
+   with no JS the section still has a picture rather than a hole. */
+.cap-media {
+  position: relative;
+  margin-top: clamp(28px, 4vw, 46px);
+  aspect-ratio: 4 / 3;
+  max-width: 430px;
+  background: #141414;
+}
+.cap-media .cap-shot {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.55s ease;
+}
+.cap-media .cap-shot.is-on {
+  opacity: 1;
+}
+/* No text sits over this one, so the darkening veil that keeps captions legible
+   on the work rail has nothing to do here but muddy the picture. The grade and
+   the duotone stay — those are what make a mixed set read as one studio. */
+.cap-media .cap-shot::after {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cap-media .cap-shot {
+    transition: none;
+  }
+}
+
 .cap-list {
   border-top: 1px solid var(--hair);
 }

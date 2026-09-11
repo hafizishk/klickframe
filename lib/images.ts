@@ -42,15 +42,36 @@ export const IMAGES = {
    * is the on-screen-graphics claim shown rather than stated.
    */
   iwl: "/images/iwl.jpg",
+
+  /**
+   * PLACEHOLDER — the four service photographs are stock (Unsplash licence:
+   * free for commercial use, no attribution required), not KlickFrame's work.
+   *
+   * They exist because the Services column was a large empty void beside a
+   * sticky heading, and pictures carry what the copy was being asked to carry.
+   * They are deliberately about the *craft* — a press pack shooting, a lit
+   * soundstage, a conference stage, a studio build — rather than about any
+   * client or event, so nothing here misrepresents a job KlickFrame did.
+   *
+   * Swap all four for their own frames before this ships. A photography studio
+   * running stock photography is the one business where a prospect recognising
+   * the picture is fatal, so this is tracked in CONTENT_HOLDS.
+   */
+  svcPhotography: "/images/service-photography.jpg",
+  svcFilm: "/images/service-film.jpg",
+  svcLive: "/images/service-live.jpg",
+  svcRetainers: "/images/service-retainers.jpg",
 } as const;
 
 export type ImageKey = keyof typeof IMAGES;
 
 /**
- * Reels, as silent looping video. Same keys as IMAGES: a key with a file here
- * renders motion in that slot, and one without falls back to the photograph,
- * which falls back to the gradient. Three tiers, so any mix of what exists
- * still looks finished.
+ * Reels, as silent looping video. Keyed by ImageKey, but deliberately partial:
+ * a key with a file here renders motion in that slot, and one without falls
+ * back to the photograph, which falls back to the gradient. Three tiers, so any
+ * mix of what exists still looks finished. The type says `Partial` so that
+ * adding a photo-only key to IMAGES — the service stills, say — is not a
+ * compile error demanding a reel that will never exist.
  *
  * These are the strongest thing in their feed, and a live multi-camera cut is
  * a claim far better shown than described.
@@ -61,7 +82,7 @@ export type ImageKey = keyof typeof IMAGES;
  * moov atom to the front so playback starts before the file finishes loading,
  * and writes the poster frame each entry below points at.
  */
-export const VIDEOS = {
+export const VIDEOS: Partial<Record<ImageKey, string>> = {
   hero: "/videos/hero.mp4",
   wed: "/videos/wedding.mp4",
   corp: "/videos/corporate.mp4",

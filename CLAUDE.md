@@ -115,7 +115,14 @@ ships for real:
 
 Photography: use **their own work**, not stock. Free, no licensing question, and the client seeing their own photos look good does more selling than any layout decision. Pull it off the public IG and YouTube thumbnails — no need to ask them for anything. Pick for spread — a wedding, a boardroom, a product shot, a portrait — not the eight best football ones.
 
-Stock is worse than nothing here. A random stock landscape in the work rail reads as filler; the gradient fallback reads as art direction. There is no picsum in the build for that reason.
+Stock is worse than nothing **in the work rail**. A random stock landscape there reads as filler; the gradient fallback reads as art direction. There is no picsum in the build for that reason.
+
+### Stock in the Services column — deliberate, and fenced
+Hafiz asked for generic photos to carry the Services section so it reads less like a wall of text, as a placeholder until their own frames land. Four Unsplash stills now sit in the sticky column there (`IMAGES.svc*`).
+
+The fence that makes this safe: **they depict the craft, never a client or an event.** A press pack shooting, a lit soundstage, a conference stage, a studio build — none of it claims to be a KlickFrame job, so nothing misrepresents the portfolio. The work rail is still 100% their own footage and stays that way.
+
+This is still a hold, and a sharper one than most: a photography studio is the one business where a prospect recognising a stock frame is fatal. Tracked in `CONTENT_HOLDS`; swap all four before launch.
 
 Images are drop-in by filename — see `public/images/README.md`. Missing files fall back to gradients, so the mockup is presentable at any stage of being filled in.
 

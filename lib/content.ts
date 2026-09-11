@@ -169,12 +169,17 @@ export const SERVICES = {
       body: "Events, corporate, product, portraits. Graded in house.",
       // UNCONFIRMED — "Same-night preview" is a turnaround promise.
       tags: ["Same-night preview", "Press and web exports", "Second shooter"],
+      // PLACEHOLDER stock — see the note on IMAGES.svcPhotography.
+      image: "svcPhotography" as ImageKey,
+      tone: "f-port" as FieldTone,
     },
     {
       n: "02",
       title: "Film",
       body: "Testimonials to campaign films. Cut and graded here.",
       tags: ["Campaign films", "Highlight reels", "Vertical cutdowns"],
+      image: "svcFilm" as ImageKey,
+      tone: "f-prod" as FieldTone,
     },
     {
       n: "03",
@@ -183,12 +188,16 @@ export const SERVICES = {
       // graphics on screen, so the line does not need a second clause to sell.
       body: "Multi-camera, switched live, your graphics on screen.",
       tags: ["Hybrid conferences", "Town halls", "Live scoring"],
+      image: "svcLive" as ImageKey,
+      tone: "f-stage" as FieldTone,
     },
     {
       n: "04",
       title: "Retainers",
       body: "A monthly shoot day for teams who post constantly.",
       tags: ["Monthly shoot days", "Asset libraries", "Priority dates"],
+      image: "svcRetainers" as ImageKey,
+      tone: "f-corp" as FieldTone,
     },
   ],
 } as const;
@@ -333,4 +342,5 @@ export const CONTENT_HOLDS = [
   "The project count — \"thirty-plus\". Every card shown is real work.",
   "Studio address and email",
   "Non-sport photography — the work rail runs on reels, and there is none for the sector list",
+  "Service photography — the four stills beside the Services heading are STOCK, not KlickFrame's work. Swap before launch.",
 ] as const;
