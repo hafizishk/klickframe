@@ -68,7 +68,7 @@ Match the D2D platform so it is one maintenance surface:
 - Full-viewport hero, slow drift, headline rises line-by-line once on load
 - Nav in `mix-blend-mode: difference`
 - Horizontal drag-scroll work rail, alternating portrait/landscape crops
-- Sector list — plain, no hover image. The mock floated the sector image at the cursor; removed, because there is no sector photography and it floated an empty gradient over the type. Do not restore it without stills to put in it.
+- Sector list — a thumbnail per row, always visible. The mock floated the sector image at the cursor on hover; that was removed when there was no sector photography (it floated an empty gradient over the type) and is **not** being restored now that there is. Hover shows one image at a time, needs a mouse, and is invisible until you go looking — the same failure as the cross-fading photograph in Services. The list stays a list: the thumbnail is small and the sector name keeps the weight.
 - ~~Sticky services column against a scrolling list~~ — **replaced, see below**
 - Archivo variable, width axis ~118 on headlines
 - No cards, no rounded corners, no borders. Form fields are underlines.
@@ -137,12 +137,16 @@ Photography: use **their own work**, not stock. Free, no licensing question, and
 
 Stock is worse than nothing **in the work rail**. A random stock landscape there reads as filler; the gradient fallback reads as art direction. There is no picsum in the build for that reason.
 
-### Stock in the Services column — deliberate, and fenced
-Hafiz asked for generic photos to carry the Services section so it reads less like a wall of text, as a placeholder until their own frames land. Four Unsplash stills now sit in the sticky column there (`IMAGES.svc*`).
+### Stock in Services and Sectors — deliberate, and fenced
+Hafiz asked for generic photos so these sections read as less of a wall of text, as a placeholder until their own frames land. Six Unsplash stills are in the build: four in the Services grid (`IMAGES.svc*`) and two in the sector list (`IMAGES.secCorp`, `IMAGES.secFood`).
 
-The fence that makes this safe: **they depict the craft, never a client or an event.** A press pack shooting, a lit soundstage, a conference stage, a studio build — none of it claims to be a KlickFrame job, so nothing misrepresents the portfolio. The work rail is still 100% their own footage and stays that way.
+The fence that makes this safe: **they depict the craft or the room, never a client or an event.** A press pack shooting, a lit soundstage, a conference stage, a studio build, a boardroom, a cafe — none of it claims to be a KlickFrame job, so nothing misrepresents the portfolio. The work rail is still 100% their own footage and stays that way. One boardroom candidate was rejected outright because another agency's name was legible on the wall; check every stock frame for third-party branding before it goes in.
 
-This is still a hold, and a sharper one than most: a photography studio is the one business where a prospect recognising a stock frame is fatal. Tracked in `CONTENT_HOLDS`; swap all four before launch.
+The other four sectors are **their own work** — frames pulled out of `assets/reels/` with ffmpeg, ranked by variance-of-Laplacian and then chosen by eye. Prefer this over stock everywhere: the first-frame posters in `public/videos/` are mostly motion-blurred, but a frame from a few seconds in is usually clean. That is how the remaining stock should be replaced.
+
+Every sector still is **pre-cropped to exactly 4:3** so the CSS cover-crop is a no-op and the subject cannot drift out of a small thumbnail. A centred crop had reduced the wedding frame to just the invitation, losing the shoes and lilies.
+
+This is still a hold, and a sharper one than most: a photography studio is the one business where a prospect recognising a stock frame is fatal. Tracked in `CONTENT_HOLDS`; swap all six before launch.
 
 Images are drop-in by filename — see `public/images/README.md`. Missing files fall back to gradients, so the mockup is presentable at any stage of being filled in.
 

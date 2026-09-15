@@ -7,8 +7,10 @@
  * which is a designed state, not a broken one. So the site is presentable at
  * every stage of filling it in.
  *
- * Nothing here is stock. A random stock landscape in the work rail reads as
- * filler and undercuts the pitch; a gradient reads as art direction.
+ * Nothing in the work rail is stock. A random stock landscape there reads as
+ * filler and undercuts the pitch; a gradient reads as art direction. The
+ * service and sector stills are a separate, fenced case — see the notes on
+ * `svc*` and `sec*` below, and CONTENT_HOLDS.
  *
  * Where each one lands (the rail is defined by WORK in lib/content.ts, so this
  * list follows it rather than the other way round):
@@ -61,6 +63,26 @@ export const IMAGES = {
   svcFilm: "/images/service-film.jpg",
   svcLive: "/images/service-live.jpg",
   svcRetainers: "/images/service-retainers.jpg",
+
+  /**
+   * The sector list. Four of these six are KlickFrame's OWN work — frames
+   * pulled out of the reels in assets/reels/ rather than the first-frame
+   * posters, which are mostly motion-blurred. Picked by sharpness and then by
+   * eye: the wedding flatlay, the Puma Ultimate player, the ASEAN Shopee
+   * Trophy Tour signage, the Picklebones rally.
+   *
+   * Only Corporate and F&B are stock (Unsplash licence), because there is no
+   * boardroom or restaurant footage in the set. Same fence as the service
+   * stills: they show the room, never a client — and the boardroom was
+   * re-picked once because the first candidate had another agency's name
+   * legible on the wall, which is not something to put on a studio's site.
+   */
+  secWed: "/images/sector-weddings.jpg",
+  secCorp: "/images/sector-corporate.jpg",
+  secBrand: "/images/sector-brands.jpg",
+  secLive: "/images/sector-live.jpg",
+  secSport: "/images/sector-sport.jpg",
+  secFood: "/images/sector-food.jpg",
 } as const;
 
 export type ImageKey = keyof typeof IMAGES;

@@ -1,18 +1,20 @@
 import { SECTORS } from "@/lib/content";
+import { IMAGES } from "@/lib/images";
+import { publicFileExists } from "@/lib/assets";
+import { MediaField } from "./MediaField";
 
 /**
- * The sector list.
+ * The sector list — a thumbnail, the sector, and one line, per row.
  *
- * The mock had each row float its image at the cursor on hover. That is gone:
- * there is no sector photography, so it floated an empty gradient over the
- * type — a grey box obscuring the words it was meant to illustrate. The one
- * row that did have an image was Sport, which made it worse: the only working
- * hover on a page whose whole argument is that this studio is not a sports
- * specialist.
+ * The mock floated the sector image at the cursor on hover. That was removed
+ * because there was no sector photography, so it floated an empty gradient over
+ * the type; it is not being restored now that there is. Hover shows one image
+ * at a time, needs a mouse, and is invisible until you go looking — the same
+ * reason the cross-fading photograph in Services was replaced. A thumbnail in
+ * the row is always there, works on a phone, and shows all six at once.
  *
- * If sector stills ever land, the reel poster frames in public/videos/ are the
- * obvious source and this is worth rebuilding. Until then a clean list beats a
- * broken flourish.
+ * The list stays a list: the thumbnail is small and the sector name still does
+ * the work, because a sector list is scanned rather than read.
  */
 export function Sectors() {
   return (
@@ -23,6 +25,11 @@ export function Sectors() {
         <div className="slist">
           {SECTORS.map((sector) => (
             <a className="srow" href="#contact" key={sector.title}>
+              <MediaField
+                tone={sector.tone}
+                photo={publicFileExists(IMAGES[sector.image]) ? IMAGES[sector.image] : undefined}
+                className="sthumb"
+              />
               <h3>{sector.title}</h3>
               <p>{sector.body}</p>
             </a>

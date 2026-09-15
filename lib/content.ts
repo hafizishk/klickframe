@@ -224,37 +224,37 @@ export const SECTORS = [
   {
     title: "Weddings",
     body: "Ceremony, banquet, live feed for family.",
-    image: "wed" as ImageKey,
+    image: "secWed" as ImageKey,
     tone: "f-wed" as FieldTone,
   },
   {
     title: "Corporate",
     body: "Conferences, town halls, D&Ds. Hybrid.",
-    image: "corp" as ImageKey,
+    image: "secCorp" as ImageKey,
     tone: "f-corp" as FieldTone,
   },
   {
     title: "Brands & agencies",
     body: "Product films, stills, content packs.",
-    image: "prod" as ImageKey,
+    image: "secBrand" as ImageKey,
     tone: "f-prod" as FieldTone,
   },
   {
     title: "Live events",
     body: "Festivals and showcases. Same-day clips.",
-    image: "stage" as ImageKey,
+    image: "secLive" as ImageKey,
     tone: "f-stage" as FieldTone,
   },
   {
     title: "Sport",
     body: "Clubs, leagues, race days. Live scoring.",
-    image: "sport" as ImageKey,
+    image: "secSport" as ImageKey,
     tone: "f-sport" as FieldTone,
   },
   {
     title: "F&B & retail",
     body: "Menu shoots, venue stills, short-form video.",
-    image: "food" as ImageKey,
+    image: "secFood" as ImageKey,
     tone: "f-food" as FieldTone,
   },
 ] as const;
@@ -347,5 +347,6 @@ export const CONTENT_HOLDS = [
   "The project count — \"thirty-plus\". Every card shown is real work.",
   "Studio address and email",
   "Non-sport photography — the work rail runs on reels, and there is none for the sector list",
-  "Service photography — the four stills beside the Services heading are STOCK, not KlickFrame's work. Swap before launch.",
+  "Service photography — the four stills in the Services grid are STOCK, not KlickFrame's work. Swap before launch.",
+  "Sector photography — Corporate and F&B are STOCK. The other four sectors are real frames from their own reels.",
 ] as const;

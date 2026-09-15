@@ -605,7 +605,7 @@ nav a:focus-visible::after {
   }
 }
 
-/* ---------- sectors: hover reveals the image ---------- */
+/* ---------- sectors: thumbnail per row ---------- */
 .sectors {
   background: var(--bone);
   color: var(--black);
@@ -624,16 +624,34 @@ nav a:focus-visible::after {
 }
 .srow {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 24px;
-  padding: clamp(20px, 2.6vw, 34px) 0;
+  /* Was baseline, which has nothing to align a replaced element against once a
+     thumbnail joins the row. */
+  align-items: center;
+  gap: clamp(16px, 2vw, 28px);
+  padding: clamp(16px, 2vw, 26px) 0;
   border-bottom: 1px solid var(--hair-d);
   position: relative;
   transition: padding-left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .srow:hover {
   padding-left: 20px;
+}
+/* Small on purpose. A sector list is scanned, so the name keeps the weight and
+   the picture only has to say what the job looks like. No text over it, so the
+   veil that keeps work-rail captions legible is off; the grade and the duotone
+   stay, which is what holds six sources together — four of them frames from
+   their own reels, two of them stock. */
+.sthumb {
+  flex: 0 0 auto;
+  width: clamp(76px, 9vw, 124px);
+  aspect-ratio: 4 / 3;
+}
+.sthumb::after {
+  display: none;
+}
+/* The body is pushed to the far edge; the name sits next to its picture. */
+.srow p {
+  margin-left: auto;
 }
 .srow h3 {
   font-size: clamp(26px, 4.2vw, 58px);
@@ -649,6 +667,10 @@ nav a:focus-visible::after {
 @media (max-width: 820px) {
   .srow p {
     display: none;
+  }
+  .srow h3 {
+    margin-left: auto;
+    text-align: right;
   }
 }
 
