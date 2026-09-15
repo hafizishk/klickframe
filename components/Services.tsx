@@ -4,47 +4,49 @@ import { publicFileExists } from "@/lib/assets";
 import { MediaField } from "./MediaField";
 
 /**
- * Services — a sticky index on the left, the four services scrolling past it.
+ * Services — heading across the top, the four services across beneath it.
  *
- * Each service carries its own photograph, in its own row. An earlier pass put
- * a single photo in the sticky column and cross-faded it to match whichever row
- * was crossing the middle of the viewport; it worked, but it showed one picture
- * at a time and only rewarded you for scrolling slowly. Four pictures on screen
- * at once do more for a section that was criticised for being too wordy than
- * one picture that changes does.
+ * Two layouts preceded this one and both fought the same problem. The mock's
+ * sticky column put the heading in one narrow column and the services in the
+ * other, which left about a screen of empty black down the left for the length
+ * of the section; on a block the client had already called too wordy, the copy
+ * sat in a narrow measure beside a void, which is what makes text feel like the
+ * only thing on offer. Filling that void with a photograph that cross-faded per
+ * row fixed the emptiness but showed one picture at a time.
  *
- * The photographs are the third column of the row rather than a band above the
- * text, so the section stays four scannable lines deep instead of four screens.
+ * Four across solves both: no void to fill, and each photograph gets the full
+ * width of its own column instead of a 240px sliver. The copy is short because
+ * the pictures and the tags carry what the sentences were carrying.
  */
 export function Services() {
   return (
     <section id="services" className="cap-sec">
-      <div className="wrap cap-grid">
-        <div className="cap-sticky">
-          <p className="slate slate-lead">{SERVICES.slate}</p>
-          <h2>{SERVICES.headline}</h2>
-          <p>{SERVICES.standfirst}</p>
+      <div className="wrap">
+        <div className="cap-head">
+          <div>
+            <p className="slate slate-lead">{SERVICES.slate}</p>
+            <h2>{SERVICES.headline}</h2>
+          </div>
+          <p className="cap-stand">{SERVICES.standfirst}</p>
         </div>
 
-        <div className="cap-list">
+        <div className="cap-grid4">
           {SERVICES.items.map((item) => (
-            <div className="cap-item" key={item.n}>
-              <span className="n">{item.n}</span>
-              <div>
-                <h3>{item.title}</h3>
-                <p>{item.body}</p>
-                <ul>
-                  {item.tags.map((tag) => (
-                    <li key={tag}>{tag}</li>
-                  ))}
-                </ul>
-              </div>
+            <article className="cap-cell" key={item.n}>
               <MediaField
                 tone={item.tone}
                 photo={publicFileExists(IMAGES[item.image]) ? IMAGES[item.image] : undefined}
                 className="cap-shot"
               />
-            </div>
+              <p className="slate n">{item.n}</p>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+              <ul>
+                {item.tags.map((tag) => (
+                  <li key={tag}>{tag}</li>
+                ))}
+              </ul>
+            </article>
           ))}
         </div>
       </div>

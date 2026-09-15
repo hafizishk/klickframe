@@ -499,109 +499,109 @@ nav a:focus-visible::after {
   padding-top: 14px;
 }
 
-/* ---------- capability: sticky index ---------- */
+/* ---------- services: four across ---------- */
+/* Rebuilt from the sticky-column layout the mock carried. That layout put the
+   heading in a 0.85fr column and the four services in the other, which left
+   roughly a screen of empty black down the left for the whole section — on a
+   block the client had already called too wordy twice, the copy was sitting in
+   a narrow measure next to a void, which is exactly what makes text feel like
+   the only thing there. Heading on top, four services across, every photograph
+   the full width of its own column: no void, and the pictures do the talking. */
 .cap-sec {
   padding-block: clamp(90px, 13vw, 190px);
 }
-.cap-grid {
+.cap-head {
   display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
-  gap: clamp(28px, 6vw, 110px);
-  align-items: start;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(24px, 5vw, 80px);
+  align-items: end;
+  margin-bottom: clamp(38px, 5vw, 70px);
 }
-.cap-sticky {
-  position: sticky;
-  top: 120px;
+.cap-head h2 {
+  font-size: clamp(30px, 4.4vw, 64px);
+  max-width: 13ch;
 }
-.cap-sticky h2 {
-  font-size: clamp(30px, 4vw, 60px);
-  max-width: 11ch;
-}
-.cap-sticky p {
-  margin-top: 22px;
+.cap-stand {
   font-size: 16.5px;
   color: rgba(244, 242, 237, 0.68);
-  max-width: 32ch;
+  max-width: 34ch;
+  padding-bottom: 8px;
 }
-/* One photograph per service, in the row itself, so all four are on screen at
-   once rather than one at a time. An earlier pass cross-faded a single shot in
-   the sticky column to match whichever row crossed the middle of the viewport;
-   it only rewarded slow scrolling, and a section criticised for being wordy is
-   better served by four pictures at once.
 
-   No text sits over these, so the darkening veil that keeps captions legible on
+.cap-grid4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(18px, 2vw, 30px);
+  border-top: 1px solid var(--hair);
+  padding-top: clamp(22px, 2.4vw, 34px);
+}
+.cap-cell {
+  display: flex;
+  flex-direction: column;
+}
+/* No text sits over these, so the darkening veil that keeps captions legible on
    the work rail only muddies them. The grade and the duotone stay — those are
    what make a mixed set read as one studio. */
 .cap-shot {
   aspect-ratio: 4 / 3;
-  align-self: start;
+  margin-bottom: 18px;
 }
 .cap-shot::after {
   display: none;
 }
-
-.cap-list {
-  border-top: 1px solid var(--hair);
-}
-.cap-item {
-  padding: clamp(26px, 3vw, 42px) 0;
-  border-bottom: 1px solid var(--hair);
-  display: grid;
-  /* number · copy · photograph */
-  grid-template-columns: 44px minmax(0, 1fr) 240px;
-  gap: 22px;
-  align-items: start;
-}
-.cap-item .n {
-  font-size: 12px;
-  letter-spacing: 0.12em;
+.cap-cell .n {
+  font-size: 11.5px;
+  letter-spacing: 0.16em;
   color: var(--smoke);
   font-weight: 600;
-  padding-top: 7px;
+  margin-bottom: 9px;
 }
-.cap-item h3 {
-  font-size: clamp(22px, 2.3vw, 34px);
+.cap-cell h3 {
+  font-size: clamp(20px, 1.7vw, 26px);
   font-weight: 600;
-  margin-bottom: 13px;
+  margin-bottom: 10px;
 }
-.cap-item p {
-  font-size: 16px;
+.cap-cell > p {
+  font-size: 15px;
   color: rgba(244, 242, 237, 0.7);
-  max-width: 46ch;
 }
-.cap-item ul {
-  margin: 16px 0 0;
+.cap-cell ul {
+  margin: 15px 0 0;
   padding: 0;
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 7px;
 }
-.cap-item li {
-  font-size: 13px;
+.cap-cell li {
+  font-size: 12.5px;
   color: rgba(244, 242, 237, 0.75);
   border: 1px solid var(--hair);
-  padding: 5px 11px;
+  padding: 4px 9px;
 }
-@media (max-width: 900px) {
-  .cap-grid {
+/* Two across, then one. Four columns stop being four columns well before the
+   photographs stop being worth showing. */
+@media (max-width: 1080px) {
+  .cap-grid4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: clamp(30px, 4vw, 48px);
+  }
+}
+@media (max-width: 760px) {
+  .cap-head {
     grid-template-columns: 1fr;
+    align-items: start;
   }
-  .cap-sticky {
-    position: static;
+  .cap-stand {
+    padding-bottom: 0;
   }
 }
-/* Narrow enough that a 210px column would squeeze the copy to a ribbon: the
-   photograph drops under the text and runs the full width of the row instead.
-   Still four photographs, still no scrolling required to see them. */
-@media (max-width: 680px) {
-  .cap-item {
-    grid-template-columns: 44px minmax(0, 1fr);
+@media (max-width: 560px) {
+  .cap-grid4 {
+    grid-template-columns: minmax(0, 1fr);
   }
   .cap-shot {
-    grid-column: 1 / -1;
     aspect-ratio: 16 / 9;
-    margin-top: 4px;
   }
 }
 

@@ -69,7 +69,7 @@ Match the D2D platform so it is one maintenance surface:
 - Nav in `mix-blend-mode: difference`
 - Horizontal drag-scroll work rail, alternating portrait/landscape crops
 - Sector list — plain, no hover image. The mock floated the sector image at the cursor; removed, because there is no sector photography and it floated an empty gradient over the type. Do not restore it without stills to put in it.
-- Sticky services column against a scrolling list
+- ~~Sticky services column against a scrolling list~~ — **replaced, see below**
 - Archivo variable, width axis ~118 on headlines
 - No cards, no rounded corners, no borders. Form fields are underlines.
 - Type: Archivo. Palette: `#070707` / `#F4F2ED`, near-monochrome.
@@ -77,6 +77,26 @@ Match the D2D platform so it is one maintenance surface:
 Marquee must clone its set until it exceeds 2× viewport, animate by exactly one set width, and rebuild on resize. Duration derived from width, not fixed, or it speeds up as logos are added. When real logos go in they need explicit `width`/`height` or the measurement runs against zero-width images.
 
 Hero currently holds a client-supplied match photo (Malaysia v Singapore, centre circle), cropped at `center 38%`. It is dark in the lower third so white type holds. **A bright wedding hero will need a stronger veil gradient.**
+
+### Deviation from the mock — Services is four across, not a sticky column
+The mock put the Services heading in a 0.85fr column and the four services in
+the other. The heading is ~300px of content against ~1000px of list, so the
+section ran with about a screen of empty black down its left side for its whole
+length. The client called Services too wordy three times; the copy was in fact
+already cut to one line per service, and what was actually wrong was that short
+copy in a narrow measure beside a void reads as "text is all there is".
+
+Two intermediate attempts are recorded here so they don't get re-proposed:
+filling the void with one photograph that cross-faded to match whichever row
+crossed the viewport centre (worked, but showed one picture at a time and only
+paid out if you scrolled slowly — Hafiz opened it and couldn't tell anything had
+changed), then a photo per row in a 240px third column (all four visible, but
+each was a sliver and the void remained).
+
+Now: heading across the top, four services across beneath it, each photograph
+the full width of its own column. No void, photos ~308px instead of 240px, and
+the section fits one screen instead of two. Drops to 2-up at 1080px and 1-up at
+560px. Do not restore the sticky column.
 
 ### Deviation from the mock, deliberate
 The mock's work rail sits directly under a full-width `<section>`, so its `margin-inline: calc(var(--gut) * -1)` overshoots by a gutter on each side. Measured at 1440px: card 01 rendered at `x: -60` (clipped) while the heading sat at `x: 60`, and the document carried 60px of horizontal overflow that `body { overflow-x: hidden }` only masked. The port puts the rail inside a `.wrap` and adds `scroll-padding-inline`, so mandatory snap lands card 01 flush with the heading. Full bleed to the right edge is preserved. Do not "restore" the mock here.
