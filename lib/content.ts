@@ -157,18 +157,23 @@ export const SERVICES = {
   headline: "Four things, done end to end.",
   standfirst: "No agency layers. You brief the person holding the camera.",
   /**
-   * One line each, and short enough that it stays one line in the column —
-   * measured at 1440px, the body wraps past roughly 57 characters. The client's
-   * note was that this section read as too wordy; a second line is what makes
-   * four services look like an essay, and the tags carry the detail anyway.
+   * One line each, and short enough that it stays one line in the column. That
+   * column narrowed when the photographs moved into the rows — measured at
+   * 1440px it now wraps past roughly 46 characters, so the bodies came down
+   * again to match. The client asked twice for less text here; the pictures and
+   * the tags carry what the sentences were carrying.
+   *
+   * Two tags each, not three: at this column width a third wrapped onto a
+   * second row under Photography, which put the section back to looking dense
+   * in exactly the place the complaint started.
    */
   items: [
     {
       n: "01",
       title: "Photography",
-      body: "Events, corporate, product, portraits. Graded in house.",
+      body: "Events, corporate, product, portraits.",
       // UNCONFIRMED — "Same-night preview" is a turnaround promise.
-      tags: ["Same-night preview", "Press and web exports", "Second shooter"],
+      tags: ["Same-night preview", "Second shooter"],
       // PLACEHOLDER stock — see the note on IMAGES.svcPhotography.
       image: "svcPhotography" as ImageKey,
       tone: "f-port" as FieldTone,
@@ -176,8 +181,8 @@ export const SERVICES = {
     {
       n: "02",
       title: "Film",
-      body: "Testimonials to campaign films. Cut and graded here.",
-      tags: ["Campaign films", "Highlight reels", "Vertical cutdowns"],
+      body: "Campaign films to testimonials, cut in house.",
+      tags: ["Campaign films", "Vertical cutdowns"],
       image: "svcFilm" as ImageKey,
       tone: "f-prod" as FieldTone,
     },
@@ -186,16 +191,16 @@ export const SERVICES = {
       title: "Live production",
       // The differentiator, stated flat: few Singapore studios cut live with
       // graphics on screen, so the line does not need a second clause to sell.
-      body: "Multi-camera, switched live, your graphics on screen.",
-      tags: ["Hybrid conferences", "Town halls", "Live scoring"],
+      body: "Multi-camera, cut live, graphics on screen.",
+      tags: ["Hybrid conferences", "Live scoring"],
       image: "svcLive" as ImageKey,
       tone: "f-stage" as FieldTone,
     },
     {
       n: "04",
       title: "Retainers",
-      body: "A monthly shoot day for teams who post constantly.",
-      tags: ["Monthly shoot days", "Asset libraries", "Priority dates"],
+      body: "One shoot day a month, for teams who post.",
+      tags: ["Monthly shoot days", "Asset libraries"],
       image: "svcRetainers" as ImageKey,
       tone: "f-corp" as FieldTone,
     },
